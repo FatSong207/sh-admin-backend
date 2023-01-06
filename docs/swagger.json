@@ -1,0 +1,336 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "sh-Admin 後端接口",
+        "title": "sh-Admin Api",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:5001",
+    "basePath": "/api",
+    "paths": {
+        "/customer/GetByEmail/{email}": {
+            "get": {
+                "description": "分頁列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerApi"
+                ],
+                "summary": "根據Email獲取Customer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "EMail",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{id}": {
+            "get": {
+                "description": "根據Id獲取Customer對應的OutDto",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerApi"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id主鍵",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers": {
+            "get": {
+                "description": "Customer分頁列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CustomerApi"
+                ],
+                "summary": "Customer分頁列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "第幾頁",
+                        "name": "pageNum",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每頁大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "created",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "creator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "industry",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "phone",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "region",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "remarks",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "source",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "updated",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/GetByCode/{code}": {
+            "get": {
+                "description": "根據Code獲取實體Product",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ProductApi"
+                ],
+                "summary": "根據Code獲取Product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}": {
+            "get": {
+                "description": "根據Id獲取Product對應的OutDto",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ProductApi"
+                ],
+                "summary": "根據Id獲取Product對應的OutDto",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id主鍵",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "description": "Product分頁列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ProductApi"
+                ],
+                "summary": "Product分頁列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "第幾頁",
+                        "name": "pageNum",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每頁大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "created",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "creator",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "description",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Name        string  `gorm:\"name\" form:\"name\" binding:\"required,oneof=运动鞋 洗衣液\"`",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "unit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "updated",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "common.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+# port
+Port: 5001
+
+# Redis資料庫配置
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password:
+  database: 0
+
+# Zap配置
+zap:
+  level: debug
+  prefix: ""
+  format: console
+  director: log
+  log-in-console: true
+
+# JWT配置
+jwt:
+  signingKey: z3d6k8v0n3w7m9sa1fd0u09h
+  expiredTime: 10800
+
+# MySQL資料庫配置
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: 1qaz@WSX
+  dbname: crm
+  maxIdleConns: 10
+  maxOpenConns: 100
+connMaxLifetime: 3600

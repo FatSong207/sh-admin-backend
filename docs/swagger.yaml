@@ -1,0 +1,214 @@
+basePath: /api
+definitions:
+  common.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+host: localhost:5001
+info:
+  contact: {}
+  description: sh-Admin 後端接口
+  title: sh-Admin Api
+  version: "1.0"
+paths:
+  /customer/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根據Id獲取Customer對應的OutDto
+      parameters:
+      - description: id主鍵
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      tags:
+      - CustomerApi
+  /customer/GetByEmail/{email}:
+    get:
+      consumes:
+      - application/json
+      description: 分頁列表
+      parameters:
+      - description: EMail
+        in: path
+        name: email
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根據Email獲取Customer
+      tags:
+      - CustomerApi
+  /customers:
+    get:
+      consumes:
+      - application/json
+      description: Customer分頁列表
+      parameters:
+      - description: 第幾頁
+        in: query
+        name: pageNum
+        type: integer
+      - description: 每頁大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: address
+        type: string
+      - in: query
+        name: created
+        type: integer
+      - in: query
+        name: creator
+        type: integer
+      - in: query
+        name: email
+        type: string
+      - in: query
+        name: id
+        type: integer
+      - in: query
+        name: industry
+        type: string
+      - in: query
+        name: level
+        type: string
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: phone
+        type: string
+      - in: query
+        name: region
+        type: string
+      - in: query
+        name: remarks
+        type: string
+      - in: query
+        name: source
+        type: string
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: updated
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: Customer分頁列表
+      tags:
+      - CustomerApi
+  /product/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根據Id獲取Product對應的OutDto
+      parameters:
+      - description: id主鍵
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根據Id獲取Product對應的OutDto
+      tags:
+      - ProductApi
+  /product/GetByCode/{code}:
+    get:
+      consumes:
+      - application/json
+      description: 根據Code獲取實體Product
+      parameters:
+      - description: code
+        in: path
+        name: code
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根據Code獲取Product
+      tags:
+      - ProductApi
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Product分頁列表
+      parameters:
+      - description: 第幾頁
+        in: query
+        name: pageNum
+        type: integer
+      - description: 每頁大小
+        in: query
+        name: pageSize
+        type: integer
+      - in: query
+        name: code
+        type: string
+      - in: query
+        name: created
+        type: integer
+      - in: query
+        name: creator
+        type: integer
+      - in: query
+        name: description
+        type: string
+      - in: query
+        name: id
+        type: integer
+      - description: Name        string  `gorm:"name" form:"name" binding:"required,oneof=运动鞋
+          洗衣液"`
+        in: query
+        name: name
+        type: string
+      - in: query
+        name: price
+        type: number
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: type
+        type: integer
+      - in: query
+        name: unit
+        type: string
+      - in: query
+        name: updated
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: Product分頁列表
+      tags:
+      - ProductApi
+swagger: "2.0"
