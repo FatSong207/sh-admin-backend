@@ -5,6 +5,7 @@ import (
 	"SH-admin/common/Services"
 	"SH-admin/models"
 	response "SH-admin/models/common"
+	"SH-admin/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -35,4 +36,20 @@ func (u *UserApi) Login(ctx *gin.Context) {
 		return
 	}
 	response.Result(response.ErrCodeSuccess, login, ctx)
+}
+
+// GetUserInfo 獲取用戶信息
+func (u *UserApi) GetUserInfo(ctx *gin.Context) {
+	token := ctx.Request.Header.Get("token")
+	claims, err := utils.ParseToken(token)
+	if err != nil {
+		response.Result(response.ErrCodeTokenError, nil, ctx)
+		return
+	}
+	user, err := u.baseSvc.GetById(claims.Uid)
+	if err != nil {
+		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	response.Result(response.ErrCodeSuccess, user, ctx)
 }

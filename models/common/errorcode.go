@@ -10,6 +10,7 @@ const (
 	//ErrCodeUserHasExist         = 10001 // 用户已经存在
 	ErrCodeUserNotExist    = 10002 // 用户不存在
 	ErrCOdeUserEmailOrPass = 10003 // 用户邮箱或密码错误
+	ErrCodeTokenError      = 10041 // Token錯誤
 	//ErrCodeVerityCodeSendFailed = 10004 // 验证码发送失败
 	//ErrCodeVerityCodeInvalid    = 10005 // 验证码无效
 	//ErrCodeCompanyCreateFailed  = 10006 // 企业创建失败
@@ -27,6 +28,7 @@ var msg = map[int]string{
 	//ErrCodeUserHasExist:         "user has existed",
 	ErrCodeUserNotExist:    "user not exist",
 	ErrCOdeUserEmailOrPass: "user email or password error",
+	ErrCodeTokenError:      "Token Error",
 	//ErrCodeVerityCodeSendFailed: "verify code send failed",
 	//ErrCodeVerityCodeInvalid:    "verify code invalid",
 	//ErrCodeCompanyCreateFailed:  "company create failed",

@@ -13,7 +13,8 @@ import (
 
 func InitRouter() {
 	e := gin.Default()
-	// 开启跨域
+
+	// 開啟跨域
 	e.Use(middleware.Cors())
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -34,6 +35,7 @@ func InitRouter() {
 	{
 		router.InitProductRouter(privateGroup)
 		router.InitCustomerRouter(privateGroup)
+		router.InitUserRouter(privateGroup)
 	}
 
 	e.Run(fmt.Sprintf(":%s", global.Config.Port))
