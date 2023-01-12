@@ -3,11 +3,12 @@ package models
 type User struct {
 	Id       int64  `gorm:"primaryKey" form:"id"`
 	Email    string `gorm:"email" form:"email"`
-	Password string `gorm:"password" form:"password"`
+	Password string `gorm:"password" form:"password" json:"-"`
 	Name     string `gorm:"name" form:"name"`
 	Version  int    `gorm:"version" form:"version"`
 	Expired  int64  `gorm:"expired" form:"expired"`
 	Status   int    `gorm:"status" form:"status"`
+	RoleId   int64  `gorm:"role_id"`
 	Created  int64  `gorm:"created" form:"created"`
 	Updated  int64  `gorm:"updated" form:"updated"`
 }

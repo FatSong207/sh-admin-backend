@@ -12,12 +12,14 @@ import (
 type UserApi struct {
 	*BaseApi[models.User, models.UserOutDto]
 	IServices.IUserService
+	IServices.IMenuService
 }
 
 func NewUserApi() *UserApi {
 	ins := &UserApi{
 		NewBaseApi[models.User, models.UserOutDto](),
 		Services.NewUserService(),
+		Services.NewMenuService(),
 	}
 	return ins
 }
@@ -47,6 +49,7 @@ func (u *UserApi) GetUserInfo(ctx *gin.Context) {
 		return
 	}
 	user, err := u.baseSvc.GetById(claims.Uid)
+
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return

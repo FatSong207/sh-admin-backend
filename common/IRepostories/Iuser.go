@@ -7,5 +7,4 @@ import (
 
 type IUserRepostory interface {
 	Core.IRepostory[models.User, models.UserOutDto]
-	//GetByCode(code string) (*models.Product, error)
 }
