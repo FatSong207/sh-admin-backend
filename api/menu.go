@@ -24,6 +24,7 @@ func NewMenuApi() *MenuApi {
 	return ins
 }
 
+// GetMenuTree 根據Token獲取使用者的功能權限
 func (m *MenuApi) GetMenuTree(ctx *gin.Context) {
 	token := ctx.Request.Header.Get("token")
 	claims, err := utils.ParseToken(token)
@@ -44,4 +45,14 @@ func (m *MenuApi) GetMenuTree(ctx *gin.Context) {
 	}
 
 	response.Result(response.ErrCodeSuccess, treeMap, ctx)
+}
+
+// GetAllMenuTree 獲取所有功能模塊，用於功能模塊下的樹狀table顯示
+func (m *MenuApi) GetAllMenuTree(ctx *gin.Context) {
+	tree, err := m.IMenuService.GetAllMenuTree()
+	if err != nil {
+		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	response.Result(response.ErrCodeSuccess, tree, ctx)
 }

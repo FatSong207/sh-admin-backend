@@ -8,6 +8,16 @@ definitions:
       message:
         type: string
     type: object
+  models.UserLoginReq:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
 host: localhost:5001
 info:
   contact: {}
@@ -116,6 +126,41 @@ paths:
       summary: Customer分頁列表
       tags:
       - CustomerApi
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 登入並返回token+User
+      parameters:
+      - description: 登入參數
+        in: body
+        name: models.UserLoginReq
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLoginReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 登入
+      tags:
+      - UserApi
+  /menu/tree:
+    get:
+      consumes:
+      - application/json
+      description: 根據Token獲取使用者權限範圍功能樹
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 獲取使用者權限範圍功能樹
+      tags:
+      - MenuApi
   /product/{id}:
     get:
       consumes:
@@ -211,4 +256,22 @@ paths:
       summary: Product分頁列表
       tags:
       - ProductApi
+  /user/info:
+    get:
+      consumes:
+      - application/json
+      description: 根據Token獲取用戶信息
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根據Token獲取用戶信息
+      tags:
+      - UserApi
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: token
+    type: apiKey
 swagger: "2.0"

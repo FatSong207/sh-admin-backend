@@ -7,6 +7,8 @@ const (
 	ErrCodeNoLogin      = 3 // 未登录或非法访问
 	ErrCodeTokenExpire  = 4 // Token过期
 
+	ErrCode403 = 403 //權限不足
+
 	//ErrCodeUserHasExist         = 10001 // 用户已经存在
 	ErrCodeUserNotExist    = 10002 // 用户不存在
 	ErrCOdeUserEmailOrPass = 10003 // 用户邮箱或密码错误
@@ -25,6 +27,7 @@ var msg = map[int]string{
 	ErrCodeParamInvalid: "param invalid",
 	ErrCodeNoLogin:      "no login",
 	ErrCodeTokenExpire:  "token expire",
+	ErrCode403:          "user has no authorize",
 	//ErrCodeUserHasExist:         "user has existed",
 	ErrCodeUserNotExist:    "user not exist",
 	ErrCOdeUserEmailOrPass: "user email or password error",

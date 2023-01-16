@@ -2,6 +2,7 @@ package router
 
 import (
 	"SH-admin/api"
+	"SH-admin/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,7 @@ import (
 //}
 
 func InitProductRouter(g *gin.RouterGroup) {
-	pg := g.Group("/product")
+	pg := g.Group("/product").Use(middleware.AuthorizeHandler())
 
 	{
 		pg.GET(":id", api.NewProductApi().GetById)               //http://localhost:5001/api/product/44

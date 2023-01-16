@@ -31,7 +31,7 @@ func InitRouter() {
 
 	//路由分組
 	privateGroup := e.Group("/api")
-	privateGroup.Use(middleware.LogHandler())
+	privateGroup.Use(middleware.LogHandler()).Use(middleware.JwtAuth())
 	{
 		router.InitProductRouter(privateGroup)
 		router.InitCustomerRouter(privateGroup)

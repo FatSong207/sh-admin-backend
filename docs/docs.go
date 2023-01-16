@@ -177,6 +177,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/login": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "登入並返回token+User",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserApi"
+                ],
+                "summary": "登入",
+                "parameters": [
+                    {
+                        "description": "登入參數",
+                        "name": "models.UserLoginReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UserLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/menu/tree": {
+            "get": {
+                "description": "根據Token獲取使用者權限範圍功能樹",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MenuApi"
+                ],
+                "summary": "獲取使用者權限範圍功能樹",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/product/GetByCode/{code}": {
             "get": {
                 "description": "根據Code獲取實體Product",
@@ -324,6 +380,26 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/info": {
+            "get": {
+                "description": "根據Token獲取用戶信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserApi"
+                ],
+                "summary": "根據Token獲取用戶信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -338,6 +414,28 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "models.UserLoginReq": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "token",
+            "in": "header"
         }
     }
 }`

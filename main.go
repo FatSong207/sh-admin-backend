@@ -14,6 +14,9 @@ import (
 
 // @host localhost:5001
 // @BasePath /api
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name token
 
 func main() {
 	initializer.InitViper()

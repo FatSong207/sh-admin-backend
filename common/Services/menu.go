@@ -83,6 +83,15 @@ func (m *MenuService) GetMenuTree(roleId int64) (menus []models.MenuOutDto, err 
 	return menus, err
 }
 
+func (m *MenuService) GetAllMenuTree() (menus []models.MenuOutDto, err error) {
+	menuTree, err := m.GetMenuTreeMap(0)
+	menus = menuTree["0"]
+	for i := 0; i < len(menus); i++ {
+		err = m.GetChildrenList(&menus[i], menuTree)
+	}
+	return menus, err
+}
+
 func (m *MenuService) GetChildrenList(menu *models.MenuOutDto, treeMap map[string][]models.MenuOutDto) (err error) {
 	menu.Children = treeMap[strconv.FormatInt(menu.MenuId, 10)]
 	for i := 0; i < len(menu.Children); i++ {
