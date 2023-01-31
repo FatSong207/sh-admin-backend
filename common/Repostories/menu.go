@@ -7,7 +7,7 @@ import (
 )
 
 type MenuRepostory struct {
-	Core.BaseRepostory[models.Menu, models.MenuOutDto]
+	Core.BaseRepostory[models.Menu, models.MenuOutDto2]
 }
 
 // NewMenuRepostory CTOR

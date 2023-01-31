@@ -19,11 +19,11 @@ func NewBaseApi[T models.Entity, TODto any]() *BaseApi[T, TODto] {
 	return ins
 }
 
-// GetById 根據Id獲取實體對應的OutDto
-func (b *BaseApi[T, TODto]) GetById(ctx *gin.Context) {
+// GetByIdApi 根據Id獲取實體對應的OutDto
+func (b *BaseApi[T, TODto]) GetByIdApi(ctx *gin.Context) {
 	id := ctx.Param("id")
 	i, _ := strconv.ParseInt(id, 10, 64)
-	//getById, err := b.baseSvc.GetById(i)
+	//getById, err := b.baseSvc.GetByIdApi(i)
 	getById, err := b.baseSvc.GetOutDtoById(i)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
@@ -32,8 +32,8 @@ func (b *BaseApi[T, TODto]) GetById(ctx *gin.Context) {
 	response.Result(response.ErrCodeSuccess, getById, ctx)
 }
 
-// Insert 新增實體
-func (b *BaseApi[T, TODto]) Insert(ctx *gin.Context) {
+// InsertApi 新增實體
+func (b *BaseApi[T, TODto]) InsertApi(ctx *gin.Context) {
 	var t = new(T)
 	err := ctx.ShouldBind(t)
 	if err != nil {
@@ -48,7 +48,7 @@ func (b *BaseApi[T, TODto]) Insert(ctx *gin.Context) {
 	response.Result(response.ErrCodeSuccess, i, ctx)
 }
 
-func (b *BaseApi[T, TODto]) FindWithPager(ctx *gin.Context) {
+func (b *BaseApi[T, TODto]) FindWithPagerApi(ctx *gin.Context) {
 	var param = models.NewSearchDto[T]()
 	//ShouldBindQuery：把query string binding到struct，struct裡面的tag要用form:"xxx"
 	//ShouldBindJSON：把POST Body binding到struct，struct裡面的tag要用json:"xxx"

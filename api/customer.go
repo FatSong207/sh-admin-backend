@@ -21,15 +21,15 @@ func NewCustomerApi() *CustomerApi {
 	return ins
 }
 
-// GetByEmail
+// GetByEmailApi
 // @Summary 根據Email獲取Customer
 // @Description 分頁列表
 // @Tags CustomerApi
 // @Accept json
 // @Param email path string true "EMail"
 // @Success 200 {object} response.Response{}
-// @Router /customer/GetByEmail/{email} [get]
-func (c *CustomerApi) GetByEmail(ctx *gin.Context) {
+// @Router /customer/GetByEmailApi/{email} [get]
+func (c *CustomerApi) GetByEmailApi(ctx *gin.Context) {
 	e := ctx.Param("email")
 	t, err := c.ICustomerService.GetByEmail(e)
 	if err != nil {
@@ -39,18 +39,18 @@ func (c *CustomerApi) GetByEmail(ctx *gin.Context) {
 	response.Result(response.ErrCodeSuccess, t, ctx)
 }
 
-// GetById @Summary 根據Id獲取Customer對應的OutDto
+// GetByIdApi @Summary 根據Id獲取Customer對應的OutDto
 // @Description 根據Id獲取Customer對應的OutDto
 // @Tags CustomerApi
 // @Accept json
 // @Param id path int true "id主鍵"
 // @Success 200 {object} response.Response{}
 // @Router /customer/{id} [get]
-func (c *CustomerApi) GetById(ctx *gin.Context) {
-	c.BaseApi.GetById(ctx)
+func (c *CustomerApi) GetByIdApi(ctx *gin.Context) {
+	c.BaseApi.GetByIdApi(ctx)
 }
 
-// FindWithPager
+// FindWithPagerApi
 // @Summary Customer分頁列表
 // @Description Customer分頁列表
 // @Tags CustomerApi
@@ -59,7 +59,7 @@ func (c *CustomerApi) GetById(ctx *gin.Context) {
 // @Param T query models.Customer false "Customer條件"
 // @Success 200 {object} response.Response{}
 // @Router /customers [get]
-func (c *CustomerApi) FindWithPager(ctx *gin.Context) {
+func (c *CustomerApi) FindWithPagerApi(ctx *gin.Context) {
 	var param = models.NewSearchDto[models.Customer]()
 	err := ctx.ShouldBind(param)
 	if err != nil {

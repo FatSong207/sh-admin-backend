@@ -3,9 +3,11 @@ package models
 type Menu struct {
 	Id         int64  `gorm:"primaryKey"`
 	MenuLevel  int64  `json:"-"`
+	MenuType   int64  `json:"menuType"`
 	ParentId   string `json:"parentId"`
 	Path       string `json:"path"`
 	Name       string `json:"name"`
+	ChName     string `json:"chname"`
 	Hidden     bool   `json:"hidden"`
 	Component  string `json:"component"`
 	Sort       int64  `json:"sort"`
@@ -29,6 +31,23 @@ type MenuOutDto struct {
 	MenuId   int64        `json:"menuId" gorm:"comment:菜单ID"`
 	RoleId   int64        `json:"-" gorm:"comment:角色ID"`
 	Children []MenuOutDto `json:"children" gorm:"-"`
+}
+
+type MenuOutDto2 struct {
+	Id        int64  `gorm:"primaryKey"`
+	ParentId  string `json:"parentId"`
+	ParentIds string `json:"parentIds"`
+	MenuType  int64  `json:"menuType"`
+	Path      string `json:"path"`
+	Name      string `json:"name"`
+	ChName    string `json:"chname"`
+	Hidden    bool   `json:"hidden"`
+	Component string `json:"component"`
+	Sort      int64  `json:"sort"`
+	Title     string `json:"title" gorm:"comment:菜单名"` // 菜单名
+	Icon      string `json:"icon" gorm:"comment:菜单图标"` // 菜单图标
+	Created   int64  `gorm:"created" form:"created"`
+	Updated   int64  `gorm:"updated" form:"updated"`
 }
 
 func (Menu) TableName() string {

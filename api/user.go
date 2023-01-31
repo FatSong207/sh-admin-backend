@@ -40,15 +40,15 @@ func (u *UserApi) Login(ctx *gin.Context) {
 	response.Result(response.ErrCodeSuccess, login, ctx)
 }
 
-// GetUserInfo 獲取用戶信息
-func (u *UserApi) GetUserInfo(ctx *gin.Context) {
+// GetUserInfoApi 獲取用戶信息
+func (u *UserApi) GetUserInfoApi(ctx *gin.Context) {
 	token := ctx.Request.Header.Get("token")
 	claims, err := utils.ParseToken(token)
 	if err != nil {
 		response.Result(response.ErrCodeTokenError, nil, ctx)
 		return
 	}
-	user, err := u.baseSvc.GetById(claims.Uid)
+	user, err := u.IUserService.GetById(claims.Uid)
 
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)

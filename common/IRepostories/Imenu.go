@@ -6,5 +6,5 @@ import (
 )
 
 type IMenuRepostory interface {
-	Core.IRepostory[models.Menu, models.MenuOutDto]
+	Core.IRepostory[models.Menu, models.MenuOutDto2]
 }

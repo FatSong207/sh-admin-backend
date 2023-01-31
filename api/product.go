@@ -21,7 +21,7 @@ func NewProductApi() *ProductApi {
 	return ins
 }
 
-// GetById
+// GetByIdApi
 // @Summary 根據Id獲取Product對應的OutDto
 // @Description 根據Id獲取Product對應的OutDto
 // @Tags ProductApi
@@ -29,19 +29,19 @@ func NewProductApi() *ProductApi {
 // @Param id path int true "id主鍵"
 // @Success 200 {object} response.Response{}
 // @Router /product/{id} [get]
-func (p *ProductApi) GetById(ctx *gin.Context) {
-	p.BaseApi.GetById(ctx)
+func (p *ProductApi) GetByIdApi(ctx *gin.Context) {
+	p.BaseApi.GetByIdApi(ctx)
 }
 
-// GetByCode
+// GetByCodeApi
 // @Summary 根據Code獲取Product
 // @Description 根據Code獲取實體Product
 // @Tags ProductApi
 // @Accept json
 // @Param code path string true "code"
 // @Success 200 {object} response.Response{}
-// @Router /product/GetByCode/{code} [get]
-func (p *ProductApi) GetByCode(ctx *gin.Context) {
+// @Router /product/GetByCodeApi/{code} [get]
+func (p *ProductApi) GetByCodeApi(ctx *gin.Context) {
 	code := ctx.Param("code")
 	byCode, err := p.IProductService.GetByCode(code)
 	if err != nil {
@@ -51,7 +51,7 @@ func (p *ProductApi) GetByCode(ctx *gin.Context) {
 	response.Result(response.ErrCodeSuccess, byCode, ctx)
 }
 
-// FindWithPager
+// FindWithPagerApi
 // @Summary Product分頁列表
 // @Description Product分頁列表
 // @Tags ProductApi
@@ -60,7 +60,7 @@ func (p *ProductApi) GetByCode(ctx *gin.Context) {
 // @Param T query models.Product false "Product條件"
 // @Success 200 {object} response.Response{}
 // @Router /products [get]
-func (p *ProductApi) FindWithPager(ctx *gin.Context) {
+func (p *ProductApi) FindWithPagerApi(ctx *gin.Context) {
 	var param = models.NewSearchDto[models.Product]()
 	err := ctx.ShouldBind(param)
 	if err != nil {

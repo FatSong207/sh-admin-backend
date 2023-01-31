@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/customer/GetByEmail/{email}": {
+        "/customer/GetByEmailApi/{email}": {
             "get": {
                 "description": "分頁列表",
                 "consumes": [
@@ -233,7 +233,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/product/GetByCode/{code}": {
+        "/product/GetByCodeApi/{code}": {
             "get": {
                 "description": "根據Code獲取實體Product",
                 "consumes": [

@@ -8,6 +8,6 @@ import (
 func InitUserRouter(g *gin.RouterGroup) {
 	pg := g.Group("/user")
 	{
-		pg.GET("/info", api.NewUserApi().GetUserInfo)
+		pg.GET("/info", api.NewUserApi().GetUserInfoApi)
 	}
 }
