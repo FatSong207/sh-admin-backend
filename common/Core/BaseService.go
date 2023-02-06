@@ -86,3 +86,9 @@ func (b *BaseService[T, TODto]) InsertBatch(ts *[]*T, skipHook bool) (err error,
 	err, rowsAffected = b.baseRepo.InsertBatch(ts, skipHook)
 	return err, rowsAffected
 }
+
+// Update 修改
+func (b *BaseService[T, TODto]) Update(t *T, data map[string]any, skipHook bool) (rowsAffected int64, err error) {
+	rowsAffected, err = b.baseRepo.Update(t, data, skipHook)
+	return rowsAffected, err
+}

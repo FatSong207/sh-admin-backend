@@ -1,5 +1,7 @@
 package models
 
+import "gorm.io/gorm"
+
 type Customer struct {
 	Id       int64  `gorm:"primaryKey" json:"id,omitempty"`
 	Name     string `gorm:"name" json:"name,omitempty"`
@@ -37,3 +39,12 @@ type CustomerOutDto struct {
 func (c Customer) TableName() string {
 	return "customer"
 }
+
+func (c Customer) BeforeCreate(db *gorm.DB) (err error) {
+	return
+}
+
+func (c Customer) BeforeUpdate(db *gorm.DB) (err error) {
+	return
+}
+

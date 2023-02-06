@@ -14,4 +14,5 @@ type IService[T models.Entity, TODto any] interface {
 	GetAll() ([]T, error)
 	Insert(t *T, skipHook bool) (err error, rowsAffected int64)
 	InsertBatch(ts *[]*T, skipHook bool) (err error, rowsAffected int64)
+	Update(t *T, data map[string]any, skipHook bool) (rowsAffected int64, err error)
 }

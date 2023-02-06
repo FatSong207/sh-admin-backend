@@ -1,5 +1,7 @@
 package models
 
+import "gorm.io/gorm"
+
 type User struct {
 	Id       int64  `gorm:"primaryKey" form:"id"`
 	Email    string `gorm:"email" form:"email"`
@@ -40,4 +42,12 @@ type UserLoginRes struct {
 
 func (u User) TableName() string {
 	return "user"
+}
+
+func (u User) BeforeCreate(db *gorm.DB) (err error) {
+	return
+}
+
+func (u User) BeforeUpdate(db *gorm.DB) (err error) {
+	return
 }

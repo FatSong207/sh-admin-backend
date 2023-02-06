@@ -21,6 +21,6 @@ func InitProductRouter(g *gin.RouterGroup) {
 		pg.GET(":id", api.NewProductApi().GetByIdApi)                  //http://localhost:5001/api/product/44
 		pg.GET("GetByCodeApi/:code", api.NewProductApi().GetByCodeApi) //http://localhost:5001/api/product/GetByCode/005
 		pg.GET("", api.NewProductApi().FindWithPagerApi)               //http://localhost:5001/api/product?pageNum=1&pageSize=2&code=024&unit=只
-		pg.PUT("", api.NewProductApi().BaseApi.InsertApi)
+		pg.PUT("", api.NewProductApi().InsertApi)
 	}
 }

@@ -11,7 +11,8 @@ func InitMenuRouter(g *gin.RouterGroup) {
 		pg.GET("/tree", api.NewMenuApi().GetMenuTreeApi)
 		pg.GET("", api.NewMenuApi().GetAllMenuTreeApi)
 		pg.GET("/cascader", api.NewMenuApi().GetAllMenuTreeCasApi)
-		pg.PUT("", api.NewMenuApi().InsertApi)
+		pg.POST("", api.NewMenuApi().InsertApi)
+		pg.PUT("", api.NewMenuApi().UpdateApi)
 		pg.GET(":id", api.NewMenuApi().GetByIdApi)
 	}
 }

@@ -6,6 +6,8 @@ const (
 	ErrCodeParamInvalid = 2 // 请求参数无效
 	ErrCodeNoLogin      = 3 // 未登录或非法访问
 	ErrCodeTokenExpire  = 4 // Token过期
+	ErrCodeInsertFailed = 5 //新增失敗
+	ErrCodeUpdateFailed = 6 //更新失敗
 
 	ErrCode403 = 403 //權限不足
 
@@ -27,6 +29,8 @@ var msg = map[int]string{
 	ErrCodeParamInvalid: "param invalid",
 	ErrCodeNoLogin:      "no login",
 	ErrCodeTokenExpire:  "token expire",
+	ErrCodeInsertFailed: "InsertFailed",
+	ErrCodeUpdateFailed: "UpdateFailed",
 	ErrCode403:          "user has no authorize",
 	//ErrCodeUserHasExist:         "user has existed",
 	ErrCodeUserNotExist:    "user not exist",

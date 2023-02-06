@@ -11,5 +11,6 @@ func InitCustomerRouter(g *gin.RouterGroup) {
 		cg.GET(":id", api.NewCustomerApi().GetByIdApi)
 		cg.GET("GetByEmailApi/:email", api.NewCustomerApi().GetByEmailApi)
 		cg.GET("", api.NewCustomerApi().FindWithPagerApi)
+		cg.PUT("", api.NewCustomerApi().UpdateApi)
 	}
 }

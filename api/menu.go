@@ -7,6 +7,7 @@ import (
 	response "SH-admin/models/common"
 	"SH-admin/utils"
 	"fmt"
+	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -71,12 +72,49 @@ func (m *MenuApi) InsertApi(ctx *gin.Context) {
 		menu.Component = ""
 	}
 
-	err, i := m.IMenuService.Insert(menu, true)
+	err, i := m.IMenuService.Insert(menu, false)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 	response.Result(response.ErrCodeSuccess, i, ctx)
+}
+
+func (m *MenuApi) UpdateApi(ctx *gin.Context) {
+	menu := new(models.MenuInDto)
+	err := ctx.ShouldBind(menu)
+	if err != nil {
+		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+
+	/***額外處理(把meta拆解出來)***/
+	//metaMap := structs.Map(&menu.Meta)
+	//mm := structs.Map(menu)
+	//delete(mm, "Meta")
+	//for k, v := range metaMap {
+	//	mm[k] = v
+	//}
+	mm := structs.Map(menu)
+	if mm["ParentId"] == "" {
+		mm["ParentId"] = 0
+	}
+	mm["ChName"] = mm["Title"]
+	if mm["MenuType"] == 1 {
+		mm["Component"] = ""
+	}
+
+	update, err := m.IMenuService.Update(&models.Menu{Id: menu.Id}, mm, false)
+	if err != nil {
+		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	if update == 0 {
+		response.Result(response.ErrCodeUpdateFailed, nil, ctx)
+		return
+	}
+	response.Result(response.ErrCodeSuccess, update, ctx)
+
 }
 
 // GetMenuTreeApi 根據Token獲取使用者的功能權限

@@ -48,6 +48,11 @@ func (b *BaseApi[T, TODto]) InsertApi(ctx *gin.Context) {
 	response.Result(response.ErrCodeSuccess, i, ctx)
 }
 
+// UpdateApi 修改實體
+func (b *BaseApi[T, TODto]) UpdateApi(ctx *gin.Context) {
+
+}
+
 func (b *BaseApi[T, TODto]) FindWithPagerApi(ctx *gin.Context) {
 	var param = models.NewSearchDto[T]()
 	//ShouldBindQuery：把query string binding到struct，struct裡面的tag要用form:"xxx"

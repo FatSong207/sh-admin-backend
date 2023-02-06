@@ -23,7 +23,7 @@ jwt:
 
 # MySQL資料庫配置
 mysql:
-  host: 127.0.0.1
+  host: 127.0.0.1 #mysql 127.0.0.1
   port: 3306
   username: root
   password: 1qaz@WSX

@@ -96,3 +96,14 @@ func (b *BaseRepostory[T, TODto]) InsertBatch(ts *[]*T, skipHook bool) (err erro
 	}
 	return result.Error, result.RowsAffected
 }
+
+// Update 修改
+func (b *BaseRepostory[T, TODto]) Update(t *T, data map[string]any, skipHook bool) (rowsAffected int64, err error) {
+	//s := structs.New(T)
+	//result := global.Db.Debug().Omit("id", "updated").Model(TIDto).Updates(m)
+	result := global.Db.Debug().Model(t).Session(&gorm.Session{SkipHooks: skipHook}).Updates(data)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	return result.RowsAffected, result.Error
+}
