@@ -6,6 +6,7 @@ type Config struct {
 	Mysql
 	Zap
 	Jwt
+	Mail
 }
 
 // Redis Redis配置
@@ -41,4 +42,10 @@ type Zap struct {
 type Jwt struct {
 	SigningKey  string `mapstructure:"signingKey"`
 	ExpiredTime int    `mapstructure:"expiredTime"`
+}
+
+// Mail Mail配置
+type Mail struct {
+	UserName string `mapstructure:"username"`
+	Password string `mapstructure:"password"`
 }

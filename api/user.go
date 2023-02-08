@@ -37,6 +37,7 @@ func (u *UserApi) Login(ctx *gin.Context) {
 		response.Result(response.ErrCOdeUserEmailOrPass, nil, ctx)
 		return
 	}
+	//utils.SendMail("成功登入", "<h1>login success</h1>", login.User.Email)
 	response.Result(response.ErrCodeSuccess, login, ctx)
 }
 
@@ -55,4 +56,23 @@ func (u *UserApi) GetUserInfoApi(ctx *gin.Context) {
 		return
 	}
 	response.Result(response.ErrCodeSuccess, user, ctx)
+}
+
+// GetVerifyCode 根據email發送驗證碼
+func (u *UserApi) GetVerifyCode(ctx *gin.Context) {
+	e := ctx.Query("email")
+	errCode := u.IUserService.GetVerifyCode(e)
+	response.Result(errCode, nil, ctx)
+}
+
+// Register 註冊
+func (u *UserApi) Register(ctx *gin.Context) {
+	var param = models.UserRegisterReq{}
+	err := ctx.ShouldBind(&param)
+	if err != nil {
+		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	errCode := u.IUserService.Register(param)
+	response.Result(errCode, nil, ctx)
 }

@@ -1,6 +1,9 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type User struct {
 	Id       int64  `gorm:"primaryKey" form:"id"`
@@ -40,14 +43,24 @@ type UserLoginRes struct {
 	//ExpiresAt *jwt.NumericDate `json:"expiresAt"`
 }
 
+// UserRegisterReq 註冊參數
+type UserRegisterReq struct {
+	Name     string `json:"name" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Code     string `json:"code" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 func (u User) TableName() string {
 	return "user"
 }
 
-func (u User) BeforeCreate(db *gorm.DB) (err error) {
+func (u *User) BeforeCreate(db *gorm.DB) (err error) {
+	u.Created = time.Now().Unix()
+	u.Updated = time.Now().Unix()
 	return
 }
 
-func (u User) BeforeUpdate(db *gorm.DB) (err error) {
+func (u *User) BeforeUpdate(db *gorm.DB) (err error) {
 	return
 }

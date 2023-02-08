@@ -3,7 +3,7 @@ Port: 5001
 
 # Redis資料庫配置
 redis:
-  host: 127.0.0.1
+  host: 127.0.0.1  #docker:mysql dev:127.0.0.1
   port: 6379
   password:
   database: 0
@@ -23,11 +23,17 @@ jwt:
 
 # MySQL資料庫配置
 mysql:
-  host: 127.0.0.1 #mysql 127.0.0.1
+  host: 127.0.0.1 #docker:mysql dev:127.0.0.1
   port: 3306
   username: root
   password: 1qaz@WSX
   dbname: crm
   maxIdleConns: 10
   maxOpenConns: 100
+
+# Mail配置
+mail:
+  username: shadmlzV1@gmail.com
+  password: mtzwsgbufuqgqzdn
+
 connMaxLifetime: 3600

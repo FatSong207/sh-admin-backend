@@ -4,8 +4,6 @@ import (
 	_ "SH-admin/docs"
 	"SH-admin/global"
 	"SH-admin/initializer"
-	"context"
-	"time"
 )
 
 // @title sh-Admin Api
@@ -37,7 +35,7 @@ func main() {
 	//fmt.Println(parseToken)
 
 	//test
-	global.Rdb.SetNX(context.Background(), "test1", "value1", 60*time.Second)
+	//global.Rdb.SetNX(context.Background(), "test1", "value1", 60*time.Second)
 
 	initializer.InitRouter()
 }

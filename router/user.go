@@ -6,8 +6,9 @@ import (
 )
 
 func InitUserRouter(g *gin.RouterGroup) {
-	pg := g.Group("/user")
+	ug := g.Group("/user")
 	{
-		pg.GET("/info", api.NewUserApi().GetUserInfoApi)
+		ug.GET("/info", api.NewUserApi().GetUserInfoApi)
+		//ug.GET("/verifycode", api.NewUserApi().GetVerifyCode)
 	}
 }

@@ -27,6 +27,8 @@ func InitRouter() {
 			})
 		})
 		publicGroup.POST("login", api.NewUserApi().Login)
+		publicGroup.GET("user/verifycode", api.NewUserApi().GetVerifyCode)
+		publicGroup.POST("user/register", api.NewUserApi().Register)
 	}
 
 	//路由分組
