@@ -22,5 +22,15 @@ func (s *SystemApi) GetServerInfo(ctx *gin.Context) {
 		response.Result(response.ErrCodeFailed, nil, ctx)
 		return
 	}
+	err = si.InitRam()
+	if err != nil {
+		response.Result(response.ErrCodeFailed, nil, ctx)
+		return
+	}
+	err = si.InitDisk()
+	if err != nil {
+		response.Result(response.ErrCodeFailed, nil, ctx)
+		return
+	}
 	response.Result(response.ErrCodeSuccess, si, ctx)
 }
