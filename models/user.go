@@ -62,5 +62,6 @@ func (u *User) BeforeCreate(db *gorm.DB) (err error) {
 }
 
 func (u *User) BeforeUpdate(db *gorm.DB) (err error) {
+	db.Statement.SetColumn("updated", time.Now().Unix())
 	return
 }

@@ -10,7 +10,7 @@ import (
 
 type CustomerApi struct {
 	*BaseApi[models.Customer, models.CustomerOutDto]
-	IServices.ICustomerService
+	iService IServices.ICustomerService
 }
 
 func NewCustomerApi() *CustomerApi {
@@ -31,7 +31,7 @@ func NewCustomerApi() *CustomerApi {
 // @Router /customer/GetByEmailApi/{email} [get]
 func (c *CustomerApi) GetByEmailApi(ctx *gin.Context) {
 	e := ctx.Param("email")
-	t, err := c.ICustomerService.GetByEmail(e)
+	t, err := c.iService.GetByEmail(e)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
@@ -60,13 +60,17 @@ func (c *CustomerApi) GetByIdApi(ctx *gin.Context) {
 // @Success 200 {object} response.Response{}
 // @Router /customers [get]
 func (c *CustomerApi) FindWithPagerApi(ctx *gin.Context) {
-	var param = models.NewSearchDto[models.Customer]()
+	var param = response.NewSearchDto[models.Customer]()
 	err := ctx.ShouldBind(param)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	withPager, i, err := c.ICustomerService.FindWithPager(*param)
+	//排序
+	//m := make(map[string]string)
+	//m["created"] = "asc"
+	//param.OrderRule.OrderBy = m
+	withPager, i, err := c.iService.FindWithPager(*param)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return

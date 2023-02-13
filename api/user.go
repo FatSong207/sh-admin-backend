@@ -11,8 +11,8 @@ import (
 
 type UserApi struct {
 	*BaseApi[models.User, models.UserOutDto]
-	IServices.IUserService
-	IServices.IMenuService
+	iService     IServices.IUserService
+	_menuService IServices.IMenuService
 }
 
 func NewUserApi() *UserApi {
@@ -32,7 +32,7 @@ func (u *UserApi) Login(ctx *gin.Context) {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	login, err := u.IUserService.Login(&param)
+	login, err := u.iService.Login(&param)
 	if err != nil {
 		response.Result(response.ErrCOdeUserEmailOrPass, nil, ctx)
 		return
@@ -49,7 +49,7 @@ func (u *UserApi) GetUserInfoApi(ctx *gin.Context) {
 		response.Result(response.ErrCodeTokenError, nil, ctx)
 		return
 	}
-	user, err := u.IUserService.GetById(claims.Uid)
+	user, err := u.iService.GetById(claims.Uid)
 
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
@@ -61,7 +61,7 @@ func (u *UserApi) GetUserInfoApi(ctx *gin.Context) {
 // GetVerifyCode 根據email發送驗證碼
 func (u *UserApi) GetVerifyCode(ctx *gin.Context) {
 	e := ctx.Query("email")
-	errCode := u.IUserService.GetVerifyCode(e)
+	errCode := u.iService.GetVerifyCode(e)
 	response.Result(errCode, nil, ctx)
 }
 
@@ -73,6 +73,6 @@ func (u *UserApi) Register(ctx *gin.Context) {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	errCode := u.IUserService.Register(param)
+	errCode := u.iService.Register(param)
 	response.Result(errCode, nil, ctx)
 }

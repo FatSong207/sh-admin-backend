@@ -1,7 +1,6 @@
 package models
 
 import (
-	"SH-admin/models/common"
 	"gorm.io/gorm"
 	"time"
 )
@@ -33,19 +32,6 @@ type ProductOutDto struct {
 	//Creator     int64   `gorm:"creator"`
 	Created int64 `gorm:"created"`
 	//Updated     int64   `gorm:"updated"`
-}
-
-type SearchDto[T Entity] struct {
-	Entity   T //NOTE:這裡要放T，不能放Entity
-	PageInfo common.PageInfo
-}
-
-func NewSearchDto[T Entity]() *SearchDto[T] {
-	ins := SearchDto[T]{
-		Entity:   *new(T),
-		PageInfo: common.PageInfo{},
-	}
-	return &ins
 }
 
 // TableName 繼承自Entity

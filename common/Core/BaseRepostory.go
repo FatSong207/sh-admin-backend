@@ -59,12 +59,12 @@ func (b *BaseRepostory[T, TODto]) GetOutDtoById(key int64) (*TODto, error) {
 	return tOutDto, nil
 }
 
-func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, query T, dest *[]*T, bind *[]*T) (int64, error) {
+func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, query T, order string, dest *[]*T, bind *[]*T) (int64, error) {
 	limit := searchDto.PageSize
 	offset := searchDto.PageSize * (searchDto.PageNum - 1)
 	var t T
 	name := t.TableName()
-	global.Db.Offset(offset).Limit(limit).Table(name).Where(query).Find(dest)
+	global.Db.Offset(offset).Limit(limit).Table(name).Where(query).Order(order).Find(dest)
 	res := global.Db.Table(name).Where(query).Find(bind)
 	return res.RowsAffected, res.Error
 }

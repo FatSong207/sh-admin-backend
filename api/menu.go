@@ -14,15 +14,15 @@ import (
 
 type MenuApi struct {
 	*BaseApi[models.Menu, models.MenuOutDto2]
-	IServices.IMenuService
-	IServices.IUserService
+	iService     IServices.IMenuService
+	_userService IServices.IUserService
 }
 
 func NewMenuApi() *MenuApi {
 	ins := &MenuApi{
 		BaseApi:      NewBaseApi[models.Menu, models.MenuOutDto2](),
-		IMenuService: Services.NewMenuService(),
-		IUserService: Services.NewUserService(),
+		iService:     Services.NewMenuService(),
+		_userService: Services.NewUserService(),
 	}
 	return ins
 }
@@ -31,7 +31,7 @@ func (m *MenuApi) GetByIdApi(ctx *gin.Context) {
 	id := ctx.Param("id")
 	i, _ := strconv.ParseInt(id, 10, 64)
 	//getById, err := b.baseSvc.GetByIdApi(i)
-	getById, err := m.IMenuService.GetOutDtoById(i)
+	getById, err := m.iService.GetOutDtoById(i)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
@@ -44,7 +44,7 @@ func (m *MenuApi) GetByIdApi(ctx *gin.Context) {
 			break
 		} else {
 			parseInt, _ := strconv.ParseInt(p, 10, 64)
-			whereStruct, _ := m.IMenuService.GetByWhereStruct(&models.Menu{
+			whereStruct, _ := m.iService.GetByWhereStruct(&models.Menu{
 				Id: parseInt,
 			})
 			ps += fmt.Sprintf("%v,", whereStruct.Id)
@@ -72,7 +72,7 @@ func (m *MenuApi) InsertApi(ctx *gin.Context) {
 		menu.Component = ""
 	}
 
-	err, i := m.IMenuService.Insert(menu, false)
+	err, i := m.iService.Insert(menu, false)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
@@ -104,7 +104,7 @@ func (m *MenuApi) UpdateApi(ctx *gin.Context) {
 		mm["Component"] = ""
 	}
 
-	update, err := m.IMenuService.Update(&models.Menu{Id: menu.Id}, mm, false)
+	update, err := m.iService.Update(&models.Menu{Id: menu.Id}, mm, false)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
@@ -125,13 +125,13 @@ func (m *MenuApi) GetMenuTreeApi(ctx *gin.Context) {
 		response.Result(response.ErrCodeTokenError, nil, ctx)
 		return
 	}
-	user, err := m.IUserService.GetById(claims.Uid)
+	user, err := m._userService.GetById(claims.Uid)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 
-	treeMap, err := m.IMenuService.GetMenuTree(user.RoleId)
+	treeMap, err := m.iService.GetMenuTree(user.RoleId)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
@@ -142,7 +142,7 @@ func (m *MenuApi) GetMenuTreeApi(ctx *gin.Context) {
 
 // GetAllMenuTreeApi 獲取所有功能模塊，用於功能模塊下的樹狀table顯示
 func (m *MenuApi) GetAllMenuTreeApi(ctx *gin.Context) {
-	tree, err := m.IMenuService.GetAllMenuTree(false)
+	tree, err := m.iService.GetAllMenuTree(false)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
@@ -152,7 +152,7 @@ func (m *MenuApi) GetAllMenuTreeApi(ctx *gin.Context) {
 
 // GetAllMenuTreeCasApi 獲取所有功能模塊，用於功能模塊下的Cascader
 func (m *MenuApi) GetAllMenuTreeCasApi(ctx *gin.Context) {
-	tree, err := m.IMenuService.GetAllMenuTree(true)
+	tree, err := m.iService.GetAllMenuTree(true)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return

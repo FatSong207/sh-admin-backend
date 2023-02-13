@@ -2,6 +2,7 @@ package Core
 
 import (
 	"SH-admin/models"
+	"SH-admin/models/common"
 )
 
 type BaseService[T models.Entity, TODto any] struct {
@@ -54,12 +55,16 @@ func (b *BaseService[T, TODto]) GetOutDtoById(key int64) (*TODto, error) {
 }
 
 // FindWithPager 列表分頁
-func (b *BaseService[T, TODto]) FindWithPager(searchDto models.SearchDto[T]) (*[]*T, int64, error) {
+func (b *BaseService[T, TODto]) FindWithPager(searchDto common.SearchDto[T]) (*[]*T, int64, error) {
 	var query = searchDto.Entity
 	var dest = make([]*T, 0)
 	var bind = make([]*T, 0)
+	var o = ""
+	for k, i := range searchDto.OrderRule.OrderBy {
+		o += k + " " + i
+	}
 
-	t, err := b.baseRepo.FindWithPager(searchDto.PageInfo, query, &dest, &bind)
+	t, err := b.baseRepo.FindWithPager(searchDto.PageInfo, query, o, &dest, &bind)
 	if err != nil {
 		return nil, 0, err
 	}

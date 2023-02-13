@@ -3,6 +3,7 @@ package utils
 import (
 	"SH-admin/global"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"time"
 )
@@ -55,4 +56,14 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 		return claims, nil
 	}
 	return nil, errors.New("invalid token")
+}
+
+// GetClaims 傳入context解析token
+func GetClaims(ctx *gin.Context) (*MyClaims, error) {
+	token := ctx.Request.Header.Get("token")
+	mc, err := ParseToken(token)
+	if err != nil {
+		return nil, err
+	}
+	return mc, nil
 }

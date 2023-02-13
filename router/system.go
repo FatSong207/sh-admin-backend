@@ -6,9 +6,12 @@ import (
 )
 
 func InitSystemRouter(g *gin.RouterGroup) {
-	sg := g.Group("/system")
+	//sg := g.Group("/system")
+	//{
+	//
+	//}
+	sgWithoutDblog := g.Group("system")
 	{
-		sg.GET("/serverinfo", api.NewSystemApi().GetServerInfo)
-		//ug.GET("/verifycode", api.NewUserApi().GetVerifyCode)
+		sgWithoutDblog.GET("/serverinfo", api.NewSystemApi().GetServerInfo)
 	}
 }

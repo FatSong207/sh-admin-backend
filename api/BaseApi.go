@@ -54,7 +54,7 @@ func (b *BaseApi[T, TODto]) UpdateApi(ctx *gin.Context) {
 }
 
 func (b *BaseApi[T, TODto]) FindWithPagerApi(ctx *gin.Context) {
-	var param = models.NewSearchDto[T]()
+	var param = response.NewSearchDto[T]()
 	//ShouldBindQuery：把query string binding到struct，struct裡面的tag要用form:"xxx"
 	//ShouldBindJSON：把POST Body binding到struct，struct裡面的tag要用json:"xxx"
 	err := ctx.ShouldBind(param) //ShouldBind必須在目標結構體給定form標籤

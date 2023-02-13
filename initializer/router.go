@@ -19,7 +19,8 @@ func InitRouter() {
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	publicGroup := e.Group("/api")
+	//公共路由
+	publicGroup := e.Group("/api").Use(middleware.DbLogHandler())
 	{
 		publicGroup.GET("health", func(c *gin.Context) {
 			c.JSON(200, gin.H{
@@ -31,7 +32,7 @@ func InitRouter() {
 		publicGroup.POST("user/register", api.NewUserApi().Register)
 	}
 
-	//路由分組
+	//私有路由
 	privateGroup := e.Group("/api")
 	privateGroup.Use(middleware.LogHandler()).Use(middleware.JwtAuth())
 	{
@@ -40,6 +41,7 @@ func InitRouter() {
 		router.InitUserRouter(privateGroup)
 		router.InitMenuRouter(privateGroup)
 		router.InitSystemRouter(privateGroup)
+		router.InitLogRouter(privateGroup)
 	}
 
 	e.Run(fmt.Sprintf(":%s", global.Config.Port))

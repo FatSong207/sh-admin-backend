@@ -2,17 +2,21 @@ package router
 
 import (
 	"SH-admin/api"
+	"SH-admin/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitMenuRouter(g *gin.RouterGroup) {
-	pg := g.Group("menu")
+	mg := g.Group("menu").Use(middleware.DbLogHandler())
 	{
-		pg.GET("/tree", api.NewMenuApi().GetMenuTreeApi)
-		pg.GET("", api.NewMenuApi().GetAllMenuTreeApi)
-		pg.GET("/cascader", api.NewMenuApi().GetAllMenuTreeCasApi)
-		pg.POST("", api.NewMenuApi().InsertApi)
-		pg.PUT("", api.NewMenuApi().UpdateApi)
-		pg.GET(":id", api.NewMenuApi().GetByIdApi)
+		mg.POST("", api.NewMenuApi().InsertApi)
+		mg.PUT("", api.NewMenuApi().UpdateApi)
+		mg.GET(":id", api.NewMenuApi().GetByIdApi)
+	}
+	mWithoutDblog := g.Group("menu")
+	{
+		mWithoutDblog.GET("/tree", api.NewMenuApi().GetMenuTreeApi)
+		mWithoutDblog.GET("", api.NewMenuApi().GetAllMenuTreeApi)
+		mWithoutDblog.GET("/cascader", api.NewMenuApi().GetAllMenuTreeCasApi)
 	}
 }

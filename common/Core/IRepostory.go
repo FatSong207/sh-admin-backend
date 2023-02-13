@@ -10,7 +10,7 @@ type IRepostory[T models.Entity, TODto any] interface {
 	GetByWhereStruct(t *T) (*T, error)
 	GetListByWhereStruct(t *T) ([]T, error)
 	GetOutDtoById(key int64) (*TODto, error)
-	FindWithPager(searchDto common.PageInfo, query T, dest *[]*T, bind *[]*T) (int64, error)
+	FindWithPager(searchDto common.PageInfo, query T, order string, dest *[]*T, bind *[]*T) (int64, error)
 	GetAll() ([]T, error)
 	Insert(t *T, skipHook bool) (err error, rowsAffected int64)
 	InsertBatch(ts *[]*T, skipHook bool) (err error, rowsAffected int64)

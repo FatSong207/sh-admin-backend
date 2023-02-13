@@ -10,7 +10,7 @@ import (
 
 type ProductApi struct {
 	*BaseApi[models.Product, models.ProductOutDto]
-	IServices.IProductService
+	iService IServices.IProductService
 }
 
 func NewProductApi() *ProductApi {
@@ -43,7 +43,7 @@ func (p *ProductApi) GetByIdApi(ctx *gin.Context) {
 // @Router /product/GetByCodeApi/{code} [get]
 func (p *ProductApi) GetByCodeApi(ctx *gin.Context) {
 	code := ctx.Param("code")
-	byCode, err := p.IProductService.GetByCode(code)
+	byCode, err := p.iService.GetByCode(code)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
@@ -61,13 +61,13 @@ func (p *ProductApi) GetByCodeApi(ctx *gin.Context) {
 // @Success 200 {object} response.Response{}
 // @Router /products [get]
 func (p *ProductApi) FindWithPagerApi(ctx *gin.Context) {
-	var param = models.NewSearchDto[models.Product]()
+	var param = response.NewSearchDto[models.Product]()
 	err := ctx.ShouldBind(param)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	withPager, i, err := p.IProductService.FindWithPager(*param)
+	withPager, i, err := p.iService.FindWithPager(*param)
 	if err != nil {
 		response.Result(response.ErrCodeParamInvalid, nil, ctx)
 		return
