@@ -6,8 +6,9 @@ const (
 	ErrCodeParamInvalid = 2 // 參數錯誤
 	ErrCodeNoLogin      = 3 // 尚未登入或非法訪問
 	ErrCodeTokenExpire  = 4 // token已過期
-	ErrCodeInsertFailed = 5 //新增失敗
-	ErrCodeUpdateFailed = 6 //更新失敗
+	ErrCodeInsertFailed = 5 // 新增失敗
+	ErrCodeUpdateFailed = 6 // 更新失敗
+	ErrCodeDeleteFailed = 7 // 刪除失敗
 
 	ErrCode403 = 403 //權限不足
 
@@ -31,6 +32,7 @@ var msg = map[int]string{
 	ErrCodeTokenExpire:          "Token已過期",
 	ErrCodeInsertFailed:         "新增失敗",
 	ErrCodeUpdateFailed:         "更新失敗",
+	ErrCodeDeleteFailed:         "刪除失敗",
 	ErrCode403:                  "權限不足",
 	ErrCodeUserHasExist:         "用户已經存在",
 	ErrCodeUserNotExist:         "用戶不存在",

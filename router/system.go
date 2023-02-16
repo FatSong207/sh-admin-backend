@@ -12,6 +12,7 @@ func InitSystemRouter(g *gin.RouterGroup) {
 	//}
 	sgWithoutDblog := g.Group("system")
 	{
-		sgWithoutDblog.GET("/serverinfo", api.NewSystemApi().GetServerInfo)
+		sgWithoutDblog.GET("/serverinfo", api.NewSystemApi().GetServerInfoApi)
+		sgWithoutDblog.GET("/dashboard", api.NewSystemApi().GetDashboardApi)
 	}
 }

@@ -12,6 +12,7 @@ func InitMenuRouter(g *gin.RouterGroup) {
 		mg.POST("", api.NewMenuApi().InsertApi)
 		mg.PUT("", api.NewMenuApi().UpdateApi)
 		mg.GET(":id", api.NewMenuApi().GetByIdApi)
+		mg.DELETE(":ids", api.NewMenuApi().DeleteApi)
 	}
 	mWithoutDblog := g.Group("menu")
 	{

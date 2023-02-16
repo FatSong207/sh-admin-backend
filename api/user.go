@@ -11,15 +11,13 @@ import (
 
 type UserApi struct {
 	*BaseApi[models.User, models.UserOutDto]
-	iService     IServices.IUserService
-	_menuService IServices.IMenuService
+	iService IServices.IUserService
 }
 
 func NewUserApi() *UserApi {
 	ins := &UserApi{
 		NewBaseApi[models.User, models.UserOutDto](),
 		Services.NewUserService(),
-		Services.NewMenuService(),
 	}
 	return ins
 }

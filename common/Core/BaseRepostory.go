@@ -59,14 +59,17 @@ func (b *BaseRepostory[T, TODto]) GetOutDtoById(key int64) (*TODto, error) {
 	return tOutDto, nil
 }
 
-func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, query T, order string, dest *[]*T, bind *[]*T) (int64, error) {
+func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, db *gorm.DB, order string, dest *[]*T, bind *[]*T) (int64, error) {
 	limit := searchDto.PageSize
 	offset := searchDto.PageSize * (searchDto.PageNum - 1)
 	var t T
 	name := t.TableName()
-	global.Db.Offset(offset).Limit(limit).Table(name).Where(query).Order(order).Find(dest)
-	res := global.Db.Table(name).Where(query).Find(bind)
-	return res.RowsAffected, res.Error
+	//global.Db.Offset(offset).Limit(limit).Table(name).Where(query).Order(order).Find(dest)
+	//res := global.Db.Table(name).Where(query).Find(bind)
+	res := db.Table(name).Find(bind)
+	total := res.RowsAffected
+	db = db.Offset(offset).Limit(limit).Table(name).Order(order).Find(dest)
+	return total, res.Error
 }
 
 // GetAll 獲取所有
@@ -83,18 +86,20 @@ func (b *BaseRepostory[T, TODto]) GetAll() ([]T, error) {
 func (b *BaseRepostory[T, TODto]) Insert(t *T, skipHook bool) (err error, rowsAffected int64) {
 	result := global.Db.Session(&gorm.Session{SkipHooks: skipHook}).Create(t)
 	if result.Error != nil {
-		panic(result.Error)
+		//panic(result.Error)
+		return result.Error, 0
 	}
-	return result.Error, result.RowsAffected
+	return nil, result.RowsAffected
 }
 
 // InsertBatch 批量新增，可選是否跳過鉤子函數
 func (b *BaseRepostory[T, TODto]) InsertBatch(ts *[]*T, skipHook bool) (err error, rowsAffected int64) {
 	result := global.Db.Session(&gorm.Session{SkipHooks: skipHook}).Create(ts)
 	if result.Error != nil {
-		panic(result.Error)
+		//panic(result.Error)
+		return result.Error, 0
 	}
-	return result.Error, result.RowsAffected
+	return nil, result.RowsAffected
 }
 
 // Update 修改
@@ -103,7 +108,18 @@ func (b *BaseRepostory[T, TODto]) Update(t *T, data map[string]any, skipHook boo
 	//result := global.Db.Debug().Omit("id", "updated").Model(TIDto).Updates(m)
 	result := global.Db.Debug().Model(t).Session(&gorm.Session{SkipHooks: skipHook}).Updates(data)
 	if result.Error != nil {
-		panic(result.Error)
+		//panic(result.Error)
+		return 0, result.Error
 	}
-	return result.RowsAffected, result.Error
+	return result.RowsAffected, nil
+}
+
+// DeleteByKeys 根據主鍵批量刪除
+func (b *BaseRepostory[T, TODto]) DeleteByKeys(keys []int) (int64, error) {
+	var t = new(T)
+	result := global.Db.Debug().Delete(t, keys)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return result.RowsAffected, nil
 }

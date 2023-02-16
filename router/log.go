@@ -14,5 +14,6 @@ func InitLogRouter(g *gin.RouterGroup) {
 	lgWithoutDbLog := g.Group("/logs")
 	{
 		lgWithoutDbLog.GET("", api.NewLogApi().FindWithPagerApi)
+		lgWithoutDbLog.GET("/loginlogs", api.NewLogApi().FindLoginlogWithPagerApi)
 	}
 }

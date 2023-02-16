@@ -6,6 +6,7 @@ import (
 	response "SH-admin/models/common"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"strings"
 )
 
 type BaseApi[T models.Entity, TODto any] struct {
@@ -51,6 +52,36 @@ func (b *BaseApi[T, TODto]) InsertApi(ctx *gin.Context) {
 // UpdateApi 修改實體
 func (b *BaseApi[T, TODto]) UpdateApi(ctx *gin.Context) {
 
+}
+
+func (b *BaseApi[T, TODto]) DeleteApi(ctx *gin.Context) {
+	//var t = new(T)
+	param := ctx.Param("ids")
+	if param == "" {
+		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	split := strings.Split(param, ",")
+	ks := make([]int, 0)
+	for _, s := range split {
+		v, err := strconv.Atoi(s)
+		if err != nil {
+			response.Result(response.ErrCodeParamInvalid, nil, ctx)
+			return
+		}
+		ks = append(ks, v)
+	}
+
+	rowsAffected, err := b.baseSvc.DeleteByKeys(ks)
+	if err != nil {
+		response.Result(response.ErrCodeDeleteFailed, nil, ctx)
+		return
+	}
+	if rowsAffected == 0 {
+		response.Result(response.ErrCodeDeleteFailed, nil, ctx)
+		return
+	}
+	response.Result(response.ErrCodeSuccess, rowsAffected, ctx)
 }
 
 func (b *BaseApi[T, TODto]) FindWithPagerApi(ctx *gin.Context) {

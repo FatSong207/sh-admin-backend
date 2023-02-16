@@ -1,6 +1,7 @@
 package Core
 
 import (
+	"SH-admin/global"
 	"SH-admin/models"
 	"SH-admin/models/common"
 )
@@ -63,8 +64,10 @@ func (b *BaseService[T, TODto]) FindWithPager(searchDto common.SearchDto[T]) (*[
 	for k, i := range searchDto.OrderRule.OrderBy {
 		o += k + " " + i
 	}
+	//t := new(T)
+	db := global.Db.Model(query)
 
-	t, err := b.baseRepo.FindWithPager(searchDto.PageInfo, query, o, &dest, &bind)
+	t, err := b.baseRepo.FindWithPager(searchDto.PageInfo, db, o, &dest, &bind)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -96,4 +99,13 @@ func (b *BaseService[T, TODto]) InsertBatch(ts *[]*T, skipHook bool) (err error,
 func (b *BaseService[T, TODto]) Update(t *T, data map[string]any, skipHook bool) (rowsAffected int64, err error) {
 	rowsAffected, err = b.baseRepo.Update(t, data, skipHook)
 	return rowsAffected, err
+}
+
+func (b *BaseService[T, TODto]) DeleteByKeys(keys []int) (int64, error) {
+	rowAffected, err := b.baseRepo.DeleteByKeys(keys)
+	if err != nil {
+		return 0, err
+	} else {
+		return rowAffected, nil
+	}
 }

@@ -53,6 +53,16 @@ func (u *UserService) Login(login *models.UserLoginReq) (*models.UserLoginRes, e
 		Token: token,
 		User:  *whereStruct,
 	}
+	r, _ := global.Rdb.Exists(context.Background(), "visitCount").Result()
+	if r == 1 {
+		global.Rdb.Incr(context.Background(), "visitCount")
+	} else {
+		t := time.Now().AddDate(0, 0, 1).Format("2006/01/02")
+		tt, _ := time.ParseInLocation("2006/01/02", t, time.Local)
+		r := tt.Unix() - time.Now().Unix()
+
+		global.Rdb.SetEx(context.Background(), "visitCount", 1, time.Duration(r)*time.Second)
+	}
 	return result, nil
 }
 
