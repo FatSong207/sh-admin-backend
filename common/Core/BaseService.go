@@ -56,9 +56,9 @@ func (b *BaseService[T, TODto]) GetOutDtoById(key int64) (*TODto, error) {
 }
 
 // FindWithPager 列表分頁
-func (b *BaseService[T, TODto]) FindWithPager(searchDto common.SearchDto[T]) (*[]*T, int64, error) {
+func (b *BaseService[T, TODto]) FindWithPager(searchDto common.SearchDto[T]) (*[]*TODto, int64, error) {
 	var query = searchDto.Entity
-	var dest = make([]*T, 0)
+	var dest = make([]*TODto, 0)
 	var bind = make([]*T, 0)
 	var o = ""
 	for k, i := range searchDto.OrderRule.OrderBy {
@@ -108,4 +108,21 @@ func (b *BaseService[T, TODto]) DeleteByKeys(keys []int) (int64, error) {
 	} else {
 		return rowAffected, nil
 	}
+}
+
+func (b *BaseService[T, TODto]) GetBySQL(sql string) (*T, error) {
+	//var t = new(T)
+	t, err := b.baseRepo.GetBySQL(sql)
+	if err != nil {
+		return nil, err
+	}
+	return t, nil
+}
+
+func (b *BaseService[T, TODto]) GetListBySQL(sql string) ([]T, error) {
+	t, err := b.baseRepo.GetListBySQL(sql)
+	if err != nil {
+		return nil, err
+	}
+	return t, nil
 }

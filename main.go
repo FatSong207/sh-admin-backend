@@ -24,6 +24,7 @@ func main() {
 
 	initializer.InitRedis()
 	initializer.InitGorm()
+	initializer.InitCasbin()
 
 	//claims := utils.CreateClaims(999)
 	//token, err := utils.CreateToken(claims)

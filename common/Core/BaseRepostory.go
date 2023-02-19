@@ -59,7 +59,7 @@ func (b *BaseRepostory[T, TODto]) GetOutDtoById(key int64) (*TODto, error) {
 	return tOutDto, nil
 }
 
-func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, db *gorm.DB, order string, dest *[]*T, bind *[]*T) (int64, error) {
+func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, db *gorm.DB, order string, dest *[]*TODto, bind *[]*T) (int64, error) {
 	limit := searchDto.PageSize
 	offset := searchDto.PageSize * (searchDto.PageNum - 1)
 	var t T
@@ -122,4 +122,22 @@ func (b *BaseRepostory[T, TODto]) DeleteByKeys(keys []int) (int64, error) {
 		return 0, result.Error
 	}
 	return result.RowsAffected, nil
+}
+
+func (b *BaseRepostory[T, TODto]) GetBySQL(sql string) (*T, error) {
+	var t = new(T)
+	result := global.Db.Raw(sql).Scan(t)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return t, nil
+}
+
+func (b *BaseRepostory[T, TODto]) GetListBySQL(sql string) ([]T, error) {
+	var t []T
+	result := global.Db.Raw(sql).Scan(&t)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return t, nil
 }

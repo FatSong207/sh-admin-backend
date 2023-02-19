@@ -8,6 +8,6 @@ import (
 
 type ILogService interface {
 	Core.IService[models.Log, models.LogOutDto]
-	FindWithPager(searchDto common.SearchDto[models.Log]) (*[]*models.Log, int64, error)
+	FindWithPager(searchDto common.SearchDto[models.Log]) (*[]*models.LogOutDto, int64, error)
 	FindLoginlogWithPager(searchDto common.SearchDto[models.Log]) (*[]*models.LoginlogOutDto, int64, error)
 }
