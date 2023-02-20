@@ -4,7 +4,7 @@ import (
 	"SH-admin/common/IServices"
 	"SH-admin/common/Services"
 	"SH-admin/models"
-	response "SH-admin/models/common"
+	"SH-admin/models/common"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,39 +22,39 @@ func NewLogApi() *LogApi {
 }
 
 func (l *LogApi) FindWithPagerApi(ctx *gin.Context) {
-	var param = response.NewSearchDto[models.Log]()
+	var param = common.NewSearchDto[models.Log]()
 	//ShouldBindQuery：把query string binding到struct，struct裡面的tag要用form:"xxx"
 	//ShouldBindJSON：把POST Body binding到struct，struct裡面的tag要用json:"xxx"
 	err := ctx.ShouldBind(param) //ShouldBind必須在目標結構體給定form標籤
 	//err := ctx.ShouldBindQuery(param)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 	//param.Entity.Type = "normalOp"
 	withPager, i, err := l.iService.FindWithPager(*param)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	response.PageResult(response.ErrCodeSuccess, withPager, i, ctx)
+	common.PageResult(common.ErrCodeSuccess, withPager, i, ctx)
 }
 
 func (l *LogApi) FindLoginlogWithPagerApi(ctx *gin.Context) {
-	var param = response.NewSearchDto[models.Log]()
+	var param = common.NewSearchDto[models.Log]()
 	//ShouldBindQuery：把query string binding到struct，struct裡面的tag要用form:"xxx"
 	//ShouldBindJSON：把POST Body binding到struct，struct裡面的tag要用json:"xxx"
 	err := ctx.ShouldBind(param) //ShouldBind必須在目標結構體給定form標籤
 	//err := ctx.ShouldBindQuery(param)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 	//param.Entity.Type = "normalOp"
 	withPager, i, err := l.iService.FindLoginlogWithPager(*param)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	response.PageResult(response.ErrCodeSuccess, withPager, i, ctx)
+	common.PageResult(common.ErrCodeSuccess, withPager, i, ctx)
 }

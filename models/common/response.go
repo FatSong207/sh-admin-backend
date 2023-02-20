@@ -25,6 +25,15 @@ func Result(code int, data any, ctx *gin.Context) {
 	})
 }
 
+func ResultWithMessage(code int, message string, data any, ctx *gin.Context) {
+	//message := msg[code]
+	ctx.JSON(http.StatusOK, Response{
+		code,
+		message,
+		data,
+	})
+}
+
 func PageResult(code int, data any, rows int64, c *gin.Context) {
 	message := msg[code]
 	page := &Page{Total: rows, List: data}

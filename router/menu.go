@@ -7,7 +7,7 @@ import (
 )
 
 func InitMenuRouter(g *gin.RouterGroup) {
-	mg := g.Group("menu").Use(middleware.DbLogHandler()).Use(middleware.AuthorizeHandler())
+	mg := g.Group("menu").Use(middleware.DbLogHandler())
 	{
 		mg.POST("", api.NewMenuApi().InsertApi)
 		mg.PUT("", api.NewMenuApi().UpdateApi)

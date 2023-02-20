@@ -2,17 +2,16 @@ package Core
 
 import (
 	"SH-admin/global"
-	"SH-admin/models"
 	"SH-admin/models/common"
 	"gorm.io/gorm"
 )
 
-type BaseRepostory[T models.Entity, TODto any] struct {
+type BaseRepostory[T common.Entity, TODto any] struct {
 	//IRepostory[T, TKey]
 }
 
 // NewBaseRepostory 供BaseService調用
-func NewBaseRepostory[T models.Entity, TODto any]() IRepostory[T, TODto] {
+func NewBaseRepostory[T common.Entity, TODto any]() IRepostory[T, TODto] {
 	instance := &BaseRepostory[T, TODto]{}
 	return instance
 }

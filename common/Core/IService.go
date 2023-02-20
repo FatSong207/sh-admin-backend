@@ -1,11 +1,10 @@
 package Core
 
 import (
-	"SH-admin/models"
 	"SH-admin/models/common"
 )
 
-type IService[T models.Entity, TODto any] interface {
+type IService[T common.Entity, TODto any] interface {
 	GetById(key int64) (*T, error)
 	GetByWhereStruct(t *T) (*T, error)
 	GetListByWhereStruct(t *T) ([]T, error)

@@ -2,17 +2,16 @@ package Core
 
 import (
 	"SH-admin/global"
-	"SH-admin/models"
 	"SH-admin/models/common"
 )
 
-type BaseService[T models.Entity, TODto any] struct {
+type BaseService[T common.Entity, TODto any] struct {
 	//IService[T, TKey]
 	baseRepo IRepostory[T, TODto] //供BaseApi調用
 }
 
 // NewBaseService 供BaseApi調用
-func NewBaseService[T models.Entity, TODto any]() IService[T, TODto] {
+func NewBaseService[T common.Entity, TODto any]() IService[T, TODto] {
 	ins := &BaseService[T, TODto]{
 		baseRepo: NewBaseRepostory[T, TODto](),
 	}

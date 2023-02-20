@@ -42,6 +42,7 @@ func InitRouter() {
 		router.InitMenuRouter(privateGroup)
 		router.InitSystemRouter(privateGroup)
 		router.InitLogRouter(privateGroup)
+		router.InitApiRouter(privateGroup)
 	}
 
 	e.Run(fmt.Sprintf(":%s", global.Config.Port))

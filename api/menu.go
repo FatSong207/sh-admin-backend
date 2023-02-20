@@ -4,7 +4,7 @@ import (
 	"SH-admin/common/IServices"
 	"SH-admin/common/Services"
 	"SH-admin/models"
-	response "SH-admin/models/common"
+	"SH-admin/models/common"
 	"SH-admin/utils"
 	"fmt"
 	"github.com/fatih/structs"
@@ -33,7 +33,7 @@ func (m *MenuApi) GetByIdApi(ctx *gin.Context) {
 	//getById, err := b.baseSvc.GetByIdApi(i)
 	getById, err := m.iService.GetOutDtoById(i)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 	var ps = ""
@@ -52,14 +52,14 @@ func (m *MenuApi) GetByIdApi(ctx *gin.Context) {
 		}
 	}
 	getById.ParentIds = ps
-	response.Result(response.ErrCodeSuccess, getById, ctx)
+	common.Result(common.ErrCodeSuccess, getById, ctx)
 }
 
 func (m *MenuApi) InsertApi(ctx *gin.Context) {
 	var menu = new(models.Menu)
 	err := ctx.ShouldBind(menu)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 
@@ -74,17 +74,17 @@ func (m *MenuApi) InsertApi(ctx *gin.Context) {
 
 	err, i := m.iService.Insert(menu, false)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	response.Result(response.ErrCodeSuccess, i, ctx)
+	common.Result(common.ErrCodeSuccess, i, ctx)
 }
 
 func (m *MenuApi) UpdateApi(ctx *gin.Context) {
 	menu := new(models.MenuInDto)
 	err := ctx.ShouldBind(menu)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 
@@ -106,14 +106,14 @@ func (m *MenuApi) UpdateApi(ctx *gin.Context) {
 
 	update, err := m.iService.Update(&models.Menu{Id: menu.Id}, mm, false)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 	if update == 0 {
-		response.Result(response.ErrCodeUpdateFailed, nil, ctx)
+		common.Result(common.ErrCodeUpdateFailed, nil, ctx)
 		return
 	}
-	response.Result(response.ErrCodeSuccess, update, ctx)
+	common.Result(common.ErrCodeSuccess, update, ctx)
 
 }
 
@@ -122,40 +122,40 @@ func (m *MenuApi) GetMenuTreeApi(ctx *gin.Context) {
 	token := ctx.Request.Header.Get("token")
 	claims, err := utils.ParseToken(token)
 	if err != nil {
-		response.Result(response.ErrCodeTokenError, nil, ctx)
+		common.Result(common.ErrCodeTokenError, nil, ctx)
 		return
 	}
 	user, err := m._userService.GetById(claims.Uid)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 
 	treeMap, err := m.iService.GetMenuTree(user.RoleId)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
 
-	response.Result(response.ErrCodeSuccess, treeMap, ctx)
+	common.Result(common.ErrCodeSuccess, treeMap, ctx)
 }
 
 // GetAllMenuTreeApi 獲取所有功能模塊，用於功能模塊下的樹狀table顯示
 func (m *MenuApi) GetAllMenuTreeApi(ctx *gin.Context) {
 	tree, err := m.iService.GetAllMenuTree(false)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	response.Result(response.ErrCodeSuccess, tree, ctx)
+	common.Result(common.ErrCodeSuccess, tree, ctx)
 }
 
 // GetAllMenuTreeCasApi 獲取所有功能模塊，用於功能模塊下的Cascader
 func (m *MenuApi) GetAllMenuTreeCasApi(ctx *gin.Context) {
 	tree, err := m.iService.GetAllMenuTree(true)
 	if err != nil {
-		response.Result(response.ErrCodeParamInvalid, nil, ctx)
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	response.Result(response.ErrCodeSuccess, tree, ctx)
+	common.Result(common.ErrCodeSuccess, tree, ctx)
 }
