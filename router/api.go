@@ -17,5 +17,6 @@ func InitApiRouter(g *gin.RouterGroup) {
 	agWithoutDbLog := g.Group("/api")
 	{
 		agWithoutDbLog.GET("", api.NewApiApi().FindWithPagerApi)
+		agWithoutDbLog.GET("tree", api.NewApiApi().GetAllApiTree)
 	}
 }

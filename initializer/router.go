@@ -22,19 +22,22 @@ func InitRouter() {
 	//公共路由
 	publicGroup := e.Group("/api").Use(middleware.DbLogHandler())
 	{
+		publicGroup.POST("login", api.NewUserApi().Login)
+		publicGroup.POST("user/register", api.NewUserApi().Register)
+	}
+	publicGroupWithoutDbLog := e.Group("/api")
+	{
 		publicGroup.GET("health", func(c *gin.Context) {
 			c.JSON(200, gin.H{
 				"message": "ok",
 			})
 		})
-		publicGroup.POST("login", api.NewUserApi().Login)
-		publicGroup.GET("user/verifycode", api.NewUserApi().GetVerifyCode)
-		publicGroup.POST("user/register", api.NewUserApi().Register)
+		publicGroupWithoutDbLog.GET("user/verifycode", api.NewUserApi().GetVerifyCode)
 	}
 
 	//私有路由
 	privateGroup := e.Group("/api")
-	privateGroup.Use(middleware.LogHandler()).Use(middleware.JwtAuth())
+	privateGroup.Use(middleware.LogHandler()).Use(middleware.JwtAuth()).Use(middleware.AuthorizeHandler())
 	{
 		router.InitProductRouter(privateGroup)
 		router.InitCustomerRouter(privateGroup)
@@ -43,6 +46,9 @@ func InitRouter() {
 		router.InitSystemRouter(privateGroup)
 		router.InitLogRouter(privateGroup)
 		router.InitApiRouter(privateGroup)
+		router.InitRoleRouter(privateGroup)
+		router.InitRoleAuthorizeRouter(privateGroup)
+		router.InitCasbinRouter(privateGroup)
 	}
 
 	e.Run(fmt.Sprintf(":%s", global.Config.Port))

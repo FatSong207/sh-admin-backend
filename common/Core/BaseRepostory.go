@@ -129,6 +129,9 @@ func (b *BaseRepostory[T, TODto]) GetBySQL(sql string) (*T, error) {
 	if result.Error != nil {
 		return nil, result.Error
 	}
+	if result.RowsAffected == 0 {
+		return nil, nil
+	}
 	return t, nil
 }
 
@@ -137,6 +140,9 @@ func (b *BaseRepostory[T, TODto]) GetListBySQL(sql string) ([]T, error) {
 	result := global.Db.Raw(sql).Scan(&t)
 	if result.Error != nil {
 		return nil, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return nil, nil
 	}
 	return t, nil
 }

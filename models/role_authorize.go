@@ -7,6 +7,11 @@ type RoleAuthorize struct {
 	AuthorizeId int64 `json:"-"`
 }
 
+type RoleAuthorizeUpdateDto struct {
+	RoleId       int64   `json:"roleId" form:"roleId"`
+	AuthorizeIds []int64 `json:"authorizeIds" form:"authorizeIds"`
+}
+
 func (RoleAuthorize) TableName() string {
 	return "role_authorize"
 }

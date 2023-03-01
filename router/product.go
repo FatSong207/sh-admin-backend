@@ -15,7 +15,7 @@ import (
 //}
 
 func InitProductRouter(g *gin.RouterGroup) {
-	pg := g.Group("/product").Use(middleware.DbLogHandler()).Use(middleware.AuthorizeHandler())
+	pg := g.Group("/product").Use(middleware.DbLogHandler())
 
 	{
 		pg.GET(":id", api.NewProductApi().GetByIdApi)                  //http://localhost:5001/api/product/44

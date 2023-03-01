@@ -21,3 +21,22 @@ func NewRoleAuthorizeService() IServices.IRoleAuthorizeService {
 	}
 	return ins
 }
+
+func (r *RoleAuthorizeService) UpdateBatchByRoleId(roleId int64, authorizeIds []int64) (AffectedRows int64, err error) {
+	_, err = r.roleAuthRepo.DeleteByKeys([]int{int(roleId)})
+	if err != nil {
+		return 0, err
+	}
+	l := make([]*models.RoleAuthorize, 0)
+	for _, id := range authorizeIds {
+		l = append(l, &models.RoleAuthorize{
+			RoleId:      roleId,
+			AuthorizeId: id,
+		})
+	}
+	err, i := r.roleAuthRepo.InsertBatch(&l, false)
+	if err != nil {
+		return 0, err
+	}
+	return i, err
+}

@@ -21,3 +21,24 @@ func NewApiService() IServices.IApiService {
 	}
 	return ins
 }
+
+func (a *ApiService) GetAllApiTree() (result []models.ApiForTree, err error) {
+	all, err := a.apiRepo.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	m := make(map[string][]models.Api)
+	for _, api := range all {
+		m[api.ApiGroup] = append(m[api.ApiGroup], api)
+	}
+	for k, apis := range m {
+		at := models.ApiForTree{
+			Description: k,
+			Path:        k,
+			Id:          k,
+			Children:    apis,
+		}
+		result = append(result, at)
+	}
+	return result, nil
+}

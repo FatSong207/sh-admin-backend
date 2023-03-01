@@ -62,7 +62,7 @@ func (a *ApiApi) UpdateApi(ctx *gin.Context) {
 		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	if tDb != nil {
+	if tDb != nil && tDb.Id != api.Id {
 		common.ResultWithMessage(common.ErrCodeInsertFailed, "已有相同路徑以及方法的資料！", nil, ctx)
 		return
 	}
@@ -78,4 +78,17 @@ func (a *ApiApi) UpdateApi(ctx *gin.Context) {
 		return
 	}
 	common.Result(common.ErrCodeSuccess, update, ctx)
+}
+
+func (a *ApiApi) GetAllApiTree(ctx *gin.Context) {
+	//tree, err := a.iService.GetAllApiTree()
+	tree, err := a.iService.GetAll()
+	if err != nil {
+		return
+	}
+	if err != nil {
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	common.Result(common.ErrCodeSuccess, tree, ctx)
 }

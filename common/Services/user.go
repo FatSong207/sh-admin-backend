@@ -108,11 +108,13 @@ func (u *UserService) Register(reg models.UserRegisterReq) int {
 		Name:     reg.Name,
 		Email:    reg.Email,
 		Password: reg.Password,
-		RoleId:   12,
+		RoleId:   14,
 	}
 	err, _ = u.userRepo.Insert(user, false)
 	if err != nil {
 		return response.ErrCodeInsertFailed
 	}
+	//新增基礎casbin規則
+	global.CachedEnforcer.AddRoleForUser(strconv.FormatInt(user.Id, 10), strconv.FormatInt(user.RoleId, 10))
 	return response.ErrCodeSuccess
 }

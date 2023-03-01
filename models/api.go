@@ -6,7 +6,7 @@ import (
 )
 
 type Api struct {
-	Id          int64     `gorm:"primaryKey"`
+	Id          int64     `json:"id" form:"id" gorm:"primaryKey"`
 	Created     time.Time `json:"created" form:"created"`
 	Updated     time.Time `json:"updated" form:"updated"`
 	Path        string    `json:"path" form:"path"`
@@ -31,6 +31,13 @@ type ApiInDto struct {
 	Description string `json:"description" form:"description"`
 	ApiGroup    string `json:"apiGroup" form:"apiGroup"`
 	Method      string `json:"method" form:"method"`
+}
+
+type ApiForTree struct {
+	Id          string `json:"id" form:"id"`
+	Description string `json:"description" form:"description"`
+	Path        string `json:"path" form:"path"`
+	Children    []Api  `json:"children" form:"children"`
 }
 
 func (a Api) TableName() string {

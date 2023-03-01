@@ -46,7 +46,14 @@ func (l *LogService) FindWithPager(searchDto response.SearchDto[models.Log]) (*[
 	}
 	fdest := make([]*models.LogOutDto, 0)
 	for _, item := range dest {
-		u, _ := l._userRepo.GetById(int64(item.UserID))
+		if item.UserID == 0 { //當UserID == 0 代表是不需要授權的訪問但是逼須記錄在log，例如註冊
+			fdest = append(fdest, item)
+			continue
+		}
+		u, err := l._userRepo.GetById(int64(item.UserID))
+		if err != nil {
+			return nil, 0, err
+		}
 		item.UserName = u.Name
 		fdest = append(fdest, item)
 	}
