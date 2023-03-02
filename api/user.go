@@ -6,71 +6,98 @@ import (
 	"SH-admin/models"
 	"SH-admin/models/common"
 	"SH-admin/utils"
+	"fmt"
+	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type UserApi struct {
 	*BaseApi[models.User, models.UserOutDto]
-	iService IServices.IUserService
+	iService       IServices.IUserService
+	_casbinService IServices.ICasbinService
 }
 
 func NewUserApi() *UserApi {
 	ins := &UserApi{
-		NewBaseApi[models.User, models.UserOutDto](),
-		Services.NewUserService(),
+		BaseApi:        NewBaseApi[models.User, models.UserOutDto](),
+		iService:       Services.NewUserService(),
+		_casbinService: Services.NewCasbinService(),
 	}
 	return ins
 }
 
-// Login 登入
-func (u *UserApi) Login(ctx *gin.Context) {
-	var param models.UserLoginReq
-	err := ctx.ShouldBind(&param)
+func (u *UserApi) FindWithPagerApi(ctx *gin.Context) {
+	var param = common.NewSearchDto[models.User]()
+	//ShouldBindQuery：把query string binding到struct，struct裡面的tag要用form:"xxx"
+	//ShouldBindJSON：把POST Body binding到struct，struct裡面的tag要用json:"xxx"
+	err := ctx.ShouldBind(param) //ShouldBind必須在目標結構體給定form標籤
+	//err := ctx.ShouldBindQuery(param)
 	if err != nil {
 		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	login, err := u.iService.Login(&param)
-	if err != nil {
-		common.Result(common.ErrCOdeUserEmailOrPass, nil, ctx)
-		return
-	}
-	//utils.SendMail("成功登入", "<h1>login success</h1>", login.User.Email)
-	common.Result(common.ErrCodeSuccess, login, ctx)
-}
-
-// GetUserInfoApi 獲取用戶信息
-func (u *UserApi) GetUserInfoApi(ctx *gin.Context) {
-	token := ctx.Request.Header.Get("token")
-	claims, err := utils.ParseToken(token)
-	if err != nil {
-		common.Result(common.ErrCodeTokenError, nil, ctx)
-		return
-	}
-	user, err := u.iService.GetById(claims.Uid)
-
+	withPager, i, err := u.iService.FindWithPager(*param)
 	if err != nil {
 		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	common.Result(common.ErrCodeSuccess, user, ctx)
+	common.PageResult(common.ErrCodeSuccess, withPager, i, ctx)
 }
 
-// GetVerifyCode 根據email發送驗證碼
-func (u *UserApi) GetVerifyCode(ctx *gin.Context) {
-	e := ctx.Query("email")
-	errCode := u.iService.GetVerifyCode(e)
-	common.Result(errCode, nil, ctx)
-}
-
-// Register 註冊
-func (u *UserApi) Register(ctx *gin.Context) {
-	var param = models.UserRegisterReq{}
-	err := ctx.ShouldBind(&param)
+func (u *UserApi) UpdateApi(ctx *gin.Context) {
+	t := new(models.User)
+	err := ctx.ShouldBind(t)
 	if err != nil {
 		common.Result(common.ErrCodeParamInvalid, nil, ctx)
 		return
 	}
-	errCode := u.iService.Register(param)
-	common.Result(errCode, nil, ctx)
+	user, err := u.iService.GetById(t.Id)
+	if err != nil {
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+
+	//修改user
+	temps := struct {
+		RoleId int64 `json:"roleId"`
+		Status int   `json:"status"`
+	}{t.RoleId, t.Status}
+	m := structs.Map(&temps)
+	update, err := u.iService.Update(&models.User{Id: t.Id}, m, false)
+	if err != nil {
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	if update == 0 {
+		common.Result(common.ErrCodeUpdateFailed, nil, ctx)
+		return
+	}
+
+	//修改casbin的role
+	err = u._casbinService.UpdateUserRole([]string{strconv.FormatInt(t.Id, 10), strconv.FormatInt(user.RoleId, 10)}, []string{strconv.FormatInt(t.Id, 10), strconv.FormatInt(temps.RoleId, 10)})
+	if err != nil {
+		common.ResultWithMessage(common.ErrCodeUpdateFailed, err.Error(), nil, ctx)
+		return
+	}
+	common.Result(common.ErrCodeSuccess, update, ctx)
+}
+
+func (u *UserApi) SendMailToUserApi(ctx *gin.Context) {
+	t := new(struct {
+		Name    string `json:"name" form:"name"`
+		Email   string `json:"email" form:"email"`
+		Content string `json:"content" form:"content"`
+	})
+	err := ctx.ShouldBind(t)
+	if err != nil {
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	err = utils.SendMail("SHAdmin-通知信件", fmt.Sprintf("<h2>您好，%s 先生/小姐：</h2>%s", t.Name, t.Content), t.Email)
+	if err != nil {
+		common.ResultWithMessage(common.ErrCodeFailed, "信件發送失敗:"+err.Error(), nil, ctx)
+		return
+	}
+	common.Result(common.ErrCodeSuccess, nil, ctx)
 }

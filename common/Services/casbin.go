@@ -52,3 +52,19 @@ func (c *CasbinService) UpdateCasbin(updateParam *models.UpdateCasbinParam) erro
 	}
 	return errors.New("刪除原資料失敗")
 }
+
+func (c *CasbinService) UpdateUserRole(oldRules []string, newRoles []string) error {
+	_, err := global.CachedEnforcer.UpdateGroupingPolicy(oldRules, newRoles)
+	if err != nil {
+		return err
+	}
+	err = global.CachedEnforcer.SavePolicy()
+	if err != nil {
+		return err
+	}
+	err = global.CachedEnforcer.InvalidateCache()
+	if err != nil {
+		return err
+	}
+	return nil
+}

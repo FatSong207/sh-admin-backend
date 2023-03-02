@@ -18,7 +18,7 @@ func AuthorizeHandler() gin.HandlerFunc {
 		sub := claims.Uid
 		obj := ctx.FullPath()
 		act := ctx.Request.Method
-		if sub == 26 {
+		if claims.RoleId == 12 {
 			ctx.Next()
 		} else {
 			success, _ := global.CachedEnforcer.Enforce(strconv.FormatInt(sub, 10), obj, act)

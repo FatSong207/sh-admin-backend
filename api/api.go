@@ -92,3 +92,21 @@ func (a *ApiApi) GetAllApiTree(ctx *gin.Context) {
 	}
 	common.Result(common.ErrCodeSuccess, tree, ctx)
 }
+
+func (a *ApiApi) FindWithPagerApi(ctx *gin.Context) {
+	var param = common.NewSearchDto[models.Api]()
+	//ShouldBindQuery：把query string binding到struct，struct裡面的tag要用form:"xxx"
+	//ShouldBindJSON：把POST Body binding到struct，struct裡面的tag要用json:"xxx"
+	err := ctx.ShouldBind(param) //ShouldBind必須在目標結構體給定form標籤
+	//err := ctx.ShouldBindQuery(param)
+	if err != nil {
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	withPager, i, err := a.iService.FindWithPager(*param)
+	if err != nil {
+		common.Result(common.ErrCodeParamInvalid, nil, ctx)
+		return
+	}
+	common.PageResult(common.ErrCodeSuccess, withPager, i, ctx)
+}

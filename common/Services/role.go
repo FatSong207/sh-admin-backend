@@ -5,7 +5,9 @@ import (
 	"SH-admin/common/IRepostories"
 	"SH-admin/common/IServices"
 	"SH-admin/common/Repostories"
+	"SH-admin/global"
 	"SH-admin/models"
+	"SH-admin/models/common"
 )
 
 type RoleService struct {
@@ -20,4 +22,25 @@ func NewRoleService() IServices.IRoleService {
 		RoleRepo: Repostories.NewRoleRepostory(),
 	}
 	return ins
+}
+
+func (r *RoleService) FindWithPager(searchDto common.SearchDto[models.Role]) (*[]*models.RoleOutDto, int64, error) {
+	var query = searchDto.Entity
+	var dest = make([]*models.RoleOutDto, 0)
+	var bind = make([]*models.Role, 0)
+	var o = ""
+	for k, i := range searchDto.OrderRule.OrderBy {
+		o += k + " " + i
+	}
+	//t := new(T)
+	db := global.Db.Model(query)
+	if query.Name != "" {
+		db = db.Where("name like ?", "%"+query.Name+"%")
+	}
+
+	t, err := r.RoleRepo.FindWithPager(searchDto.PageInfo, db, o, &dest, &bind)
+	if err != nil {
+		return nil, 0, err
+	}
+	return &dest, t, nil
 }

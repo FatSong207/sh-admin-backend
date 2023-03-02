@@ -17,5 +17,6 @@ func InitRoleRouter(g *gin.RouterGroup) {
 	rgWithoutDbRole := g.Group("/role")
 	{
 		rgWithoutDbRole.GET("", api.NewRoleApi().FindWithPagerApi)
+		rgWithoutDbRole.GET("/all", api.NewRoleApi().GetAllRoleListForSelect)
 	}
 }

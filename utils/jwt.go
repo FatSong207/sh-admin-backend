@@ -9,14 +9,16 @@ import (
 )
 
 type MyClaims struct {
-	Uid int64 `json:"uid"`
+	Uid    int64 `json:"uid"`
+	RoleId int64 `json:"roleId"`
 	jwt.RegisteredClaims
 }
 
 // CreateClaims 創建claims
-func CreateClaims(uid int64) MyClaims {
+func CreateClaims(uid int64, roleId int64) MyClaims {
 	c := MyClaims{
 		uid,
+		roleId,
 		jwt.RegisteredClaims{
 			Issuer: "sh-admin",
 			ExpiresAt: &jwt.NumericDate{

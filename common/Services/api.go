@@ -5,7 +5,9 @@ import (
 	"SH-admin/common/IRepostories"
 	"SH-admin/common/IServices"
 	"SH-admin/common/Repostories"
+	"SH-admin/global"
 	"SH-admin/models"
+	"SH-admin/models/common"
 )
 
 type ApiService struct {
@@ -41,4 +43,28 @@ func (a *ApiService) GetAllApiTree() (result []models.ApiForTree, err error) {
 		result = append(result, at)
 	}
 	return result, nil
+}
+
+func (a *ApiService) FindWithPager(searchDto common.SearchDto[models.Api]) (*[]*models.ApiOutDto, int64, error) {
+	var query = searchDto.Entity
+	var dest = make([]*models.ApiOutDto, 0)
+	var bind = make([]*models.Api, 0)
+	var o = ""
+	for k, i := range searchDto.OrderRule.OrderBy {
+		o += k + " " + i
+	}
+	//t := new(T)
+	db := global.Db.Model(query)
+	if query.Method != "" {
+		db = db.Where("method = ?", query.Method)
+	}
+	if query.ApiGroup != "" {
+		db = db.Where("api_group like ?", "%"+query.ApiGroup+"%")
+	}
+
+	t, err := a.apiRepo.FindWithPager(searchDto.PageInfo, db, o, &dest, &bind)
+	if err != nil {
+		return nil, 0, err
+	}
+	return &dest, t, nil
 }

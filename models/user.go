@@ -13,26 +13,28 @@ type User struct {
 	Version  int    `gorm:"version" form:"version"`
 	Expired  int64  `gorm:"expired" form:"expired"`
 	Status   int    `gorm:"status" form:"status"`
-	RoleId   int64  `gorm:"role_id"`
+	RoleId   int64  `gorm:"role_id" form:"roleId"`
 	Created  int64  `gorm:"created" form:"created"`
 	Updated  int64  `gorm:"updated" form:"updated"`
 }
 
 type UserOutDto struct {
-	Id    int64  `gorm:"primaryKey"`
-	Email string `gorm:"email"`
-	//Password string `gorm:"password"`
-	Name    string `gorm:"name"`
-	Version int    `gorm:"version"`
-	Expired int64  `gorm:"expired"`
-	Status  int    `gorm:"status"`
-	Created int64  `gorm:"created"`
-	//Updated  int64  `gorm:"updated"`
+	Id       int64  `gorm:"primaryKey"  form:"id" json:"id"`
+	Email    string `gorm:"email" form:"email" json:"email"`
+	Name     string `gorm:"name" form:"name" json:"name"`
+	Version  int    `gorm:"version" form:"version" json:"version"`
+	Expired  int64  `gorm:"expired" form:"expired" json:"expired"`
+	Status   int    `gorm:"status" form:"status" json:"status"`
+	RoleId   int64  `gorm:"role_id" form:"roleId" json:"roleId"`
+	RoleName string `gorm:"roleName" form:"roleName" json:"roleName"`
+	Created  int64  `gorm:"created" form:"created" json:"created"`
+	Updated  int64  `gorm:"updated" form:"updated" json:"updated"`
 }
 
 // UserLoginReq 登入參數
 type UserLoginReq struct {
-	Email    string `json:"email" binding:"required,email"`
+	//Email    string `json:"email" binding:"required,email"`
+	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 

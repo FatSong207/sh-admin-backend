@@ -22,8 +22,8 @@ func InitRouter() {
 	//公共路由
 	publicGroup := e.Group("/api").Use(middleware.DbLogHandler())
 	{
-		publicGroup.POST("login", api.NewUserApi().Login)
-		publicGroup.POST("user/register", api.NewUserApi().Register)
+		publicGroup.POST("login", api.NewLoginApi().Login)
+		publicGroup.POST("register", api.NewLoginApi().Register)
 	}
 	publicGroupWithoutDbLog := e.Group("/api")
 	{
@@ -32,7 +32,8 @@ func InitRouter() {
 				"message": "ok",
 			})
 		})
-		publicGroupWithoutDbLog.GET("user/verifycode", api.NewUserApi().GetVerifyCode)
+		publicGroupWithoutDbLog.GET("verifycode", api.NewLoginApi().GetVerifyCode)
+		publicGroupWithoutDbLog.GET("userinfo", api.NewLoginApi().GetUserInfoApi)
 	}
 
 	//私有路由
