@@ -1,22 +1,23 @@
 package router
 
 import (
-	"SH-admin/api"
-	"SH-admin/middleware"
+	"SH-admin/app/api"
+	"SH-admin/app/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitApiRouter(g *gin.RouterGroup) {
+	api := api.NewApiApi()
 	ag := g.Group("/api").Use(middleware.DbLogHandler())
 	{
-		ag.POST("", api.NewApiApi().InsertApi)
-		ag.PUT("", api.NewApiApi().UpdateApi)
-		ag.GET(":id", api.NewApiApi().GetByIdApi)
-		ag.DELETE(":ids", api.NewApiApi().DeleteApi)
+		ag.POST("", api.InsertApi)
+		ag.PUT("", api.UpdateApi)
+		ag.GET(":id", api.GetByIdApi)
+		ag.DELETE(":ids", api.DeleteApi)
 	}
 	agWithoutDbLog := g.Group("/api")
 	{
-		agWithoutDbLog.GET("", api.NewApiApi().FindWithPagerApi)
-		agWithoutDbLog.GET("tree", api.NewApiApi().GetAllApiTree)
+		agWithoutDbLog.GET("", api.FindWithPagerApi)
+		agWithoutDbLog.GET("tree", api.GetAllApiTree)
 	}
 }

@@ -1,20 +1,22 @@
 package router
 
 import (
-	"SH-admin/api"
-	"SH-admin/middleware"
+	"SH-admin/app/api"
+	"SH-admin/app/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitUserRouter(g *gin.RouterGroup) {
+	api := api.NewUserApi()
 	ug := g.Group("/user").Use(middleware.DbLogHandler())
 	{
-		ug.GET("/:id", api.NewUserApi().GetByIdApi)
-		ug.PUT("", api.NewUserApi().UpdateApi)
-		ug.POST("/sendmail", api.NewUserApi().SendMailToUserApi)
+		//ug.GET("/:id", api.GetByIdApi)
+		//ug.GET("/:id", api.Test)
+		ug.PUT("", api.UpdateApi)
+		ug.POST("/sendmail", api.SendMailToUserApi)
 	}
 	ugWithoutDbLog := g.Group("/user")
 	{
-		ugWithoutDbLog.GET("", api.NewUserApi().FindWithPagerApi)
+		ugWithoutDbLog.GET("", api.FindWithPagerApi)
 	}
 }

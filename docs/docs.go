@@ -39,7 +39,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -67,7 +67,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -171,7 +171,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -207,7 +207,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -227,7 +227,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -256,7 +256,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -285,7 +285,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -375,7 +375,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -395,7 +395,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/base.Response"
                         }
                     }
                 }
@@ -403,7 +403,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "common.Response": {
+        "base.Response": {
             "type": "object",
             "properties": {
                 "code": {

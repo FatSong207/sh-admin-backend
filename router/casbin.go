@@ -1,18 +1,19 @@
 package router
 
 import (
-	"SH-admin/api"
-	"SH-admin/middleware"
+	"SH-admin/app/api"
+	"SH-admin/app/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitCasbinRouter(g *gin.RouterGroup) {
+	api := api.NewCasbinApi()
 	cg := g.Group("/casbin").Use(middleware.DbLogHandler())
 	{
-		cg.PUT("", api.NewCasbinApi().UpdateCasbin)
+		cg.PUT("", api.UpdateCasbin)
 	}
 	cgWithoutDbLog := g.Group("/casbin")
 	{
-		cgWithoutDbLog.GET("/:roleid", api.NewCasbinApi().GetAccessApiPathByRoleId)
+		cgWithoutDbLog.GET("/:roleid", api.GetAccessApiPathByRoleId)
 	}
 }

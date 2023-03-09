@@ -1,9 +1,9 @@
 package initializer
 
 import (
-	"SH-admin/api"
+	"SH-admin/app/api"
+	middleware2 "SH-admin/app/middleware"
 	"SH-admin/global"
-	"SH-admin/middleware"
 	"SH-admin/router"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -15,12 +15,12 @@ func InitRouter() {
 	e := gin.Default()
 
 	// 開啟跨域
-	e.Use(middleware.Cors())
+	e.Use(middleware2.Cors())
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//公共路由
-	publicGroup := e.Group("/api").Use(middleware.DbLogHandler())
+	publicGroup := e.Group("/api").Use(middleware2.DbLogHandler())
 	{
 		publicGroup.POST("login", api.NewLoginApi().Login)
 		publicGroup.POST("register", api.NewLoginApi().Register)
@@ -38,7 +38,7 @@ func InitRouter() {
 
 	//私有路由
 	privateGroup := e.Group("/api")
-	privateGroup.Use(middleware.LogHandler()).Use(middleware.JwtAuth()).Use(middleware.AuthorizeHandler())
+	privateGroup.Use(middleware2.LogHandler()).Use(middleware2.JwtAuth()).Use(middleware2.AuthorizeHandler())
 	{
 		router.InitProductRouter(privateGroup)
 		router.InitCustomerRouter(privateGroup)
@@ -50,6 +50,7 @@ func InitRouter() {
 		router.InitRoleRouter(privateGroup)
 		router.InitRoleAuthorizeRouter(privateGroup)
 		router.InitCasbinRouter(privateGroup)
+		router.InitTaskJobRouter(privateGroup)
 	}
 
 	e.Run(fmt.Sprintf(":%s", global.Config.Port))

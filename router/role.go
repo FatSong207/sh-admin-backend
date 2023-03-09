@@ -1,22 +1,23 @@
 package router
 
 import (
-	"SH-admin/api"
-	"SH-admin/middleware"
+	"SH-admin/app/api"
+	"SH-admin/app/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRoleRouter(g *gin.RouterGroup) {
+	api := api.NewRoleApi()
 	rg := g.Group("/role").Use(middleware.DbLogHandler())
 	{
-		rg.GET("/:id", api.NewRoleApi().GetByIdApi)
-		rg.POST("", api.NewRoleApi().InsertApi)
-		rg.PUT("", api.NewRoleApi().UpdateApi)
-		rg.DELETE("/:ids", api.NewRoleApi().DeleteApi)
+		rg.GET("/:id", api.GetByIdApi)
+		rg.POST("", api.InsertApi)
+		rg.PUT("", api.UpdateApi)
+		rg.DELETE("/:ids", api.DeleteApi)
 	}
 	rgWithoutDbRole := g.Group("/role")
 	{
-		rgWithoutDbRole.GET("", api.NewRoleApi().FindWithPagerApi)
-		rgWithoutDbRole.GET("/all", api.NewRoleApi().GetAllRoleListForSelect)
+		rgWithoutDbRole.GET("", api.FindWithPagerApi)
+		rgWithoutDbRole.GET("/all", api.GetAllRoleListForSelect)
 	}
 }
