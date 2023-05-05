@@ -12,8 +12,18 @@ import (
 var (
 	Config         config.Config
 	Rdb            *redis.Client
-	Db             *gorm.DB
+	db             *gorm.DB
 	Log            *zap.SugaredLogger
 	CachedEnforcer *casbin.CachedEnforcer
 	Cron           map[string]*cron.Cron
 )
+
+// DB 獲取db
+func DB() *gorm.DB {
+	return db
+}
+
+// SetDB 初始化時設置db
+func SetDB(gdb *gorm.DB) {
+	db = gdb
+}

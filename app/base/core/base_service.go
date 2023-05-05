@@ -64,7 +64,7 @@ func (b *BaseService[T, TODto]) FindWithPager(searchDto common.SearchDto[T]) (*[
 		o += k + " " + i
 	}
 	//t := new(T)
-	db := global.Db.Model(query)
+	db := global.DB().Model(query)
 
 	t, err := b.baseRepo.FindWithPager(searchDto.PageInfo, db, o, &dest, &bind)
 	if err != nil {

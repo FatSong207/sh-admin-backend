@@ -27,5 +27,5 @@ func InitGorm() {
 	sqlDb.SetMaxIdleConns(m.MaxIdleConns)
 	sqlDb.SetMaxOpenConns(m.MaxOpenConns)
 	sqlDb.SetConnMaxLifetime(time.Duration(m.ConnMaxLifetime))
-	global.Db = db
+	global.SetDB(db)
 }

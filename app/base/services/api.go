@@ -54,7 +54,7 @@ func (a *ApiService) FindWithPager(searchDto common.SearchDto[models.Api]) (*[]*
 		o += k + " " + i
 	}
 	//t := new(T)
-	db := global.Db.Model(query)
+	db := global.DB().Model(query)
 	if query.Method != "" {
 		db = db.Where("method = ?", query.Method)
 	}

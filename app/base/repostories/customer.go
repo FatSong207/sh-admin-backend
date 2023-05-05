@@ -20,7 +20,7 @@ func NewCustomerRepostory() interface_repostories.ICustomerRepostory {
 // GetByEmail 根據Email獲取客戶
 func (c *CustomerRepostory) GetByEmail(email string) (*models.Customer, error) {
 	t := new(models.Customer)
-	err := global.Db.Where("email like ?", "%"+email+"%").First(t).Error
+	err := global.DB().Where("email like ?", "%"+email+"%").First(t).Error
 	if err != nil {
 		return nil, err
 	}

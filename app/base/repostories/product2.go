@@ -18,7 +18,7 @@ func NewProduct2Repostory() interface_repostories.IProductRepostory {
 
 func (p *Product2Repostory) GetByCode(code string) *models.Product {
 	t := new(models.Product)
-	err := global.Db.Where("code=?", code).First(t).Error
+	err := global.DB().Where("code=?", code).First(t).Error
 	if err != nil {
 		panic(err)
 	}

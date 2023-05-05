@@ -19,7 +19,7 @@ func NewBaseRepostory[T common.Entity, TODto any]() IBaseRepostory[T, TODto] {
 // GetById 根據主鍵獲取實體
 func (b *BaseRepostory[T, TODto]) GetById(key int64) (*T, error) {
 	t := new(T)
-	err := global.Db.Where("id=?", key).First(t).Error
+	err := global.DB().Where("id=?", key).First(t).Error
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func (b *BaseRepostory[T, TODto]) GetById(key int64) (*T, error) {
 // GetByWhereStruct 根據傳入的實體當作查詢條件
 func (b *BaseRepostory[T, TODto]) GetByWhereStruct(t *T) (*T, error) {
 	t2 := new(T)
-	err := global.Db.Where(t).First(t2).Error
+	err := global.DB().Where(t).First(t2).Error
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (b *BaseRepostory[T, TODto]) GetByWhereStruct(t *T) (*T, error) {
 // GetListByWhereStruct 根據傳入的實體當作查詢條件，查多筆
 func (b *BaseRepostory[T, TODto]) GetListByWhereStruct(t *T) ([]T, error) {
 	t2 := make([]T, 0)
-	err := global.Db.Where(t).Find(&t2).Error
+	err := global.DB().Where(t).Find(&t2).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (b *BaseRepostory[T, TODto]) GetOutDtoById(key int64) (*TODto, error) {
 	tOutDto := new(TODto)
 	t := new(T)
 	name := (*t).TableName()
-	err := global.Db.Table(name).Where("id=?", key).First(tOutDto).Error
+	err := global.DB().Table(name).Where("id=?", key).First(tOutDto).Error
 	if err != nil {
 		return nil, err
 	}
@@ -63,8 +63,8 @@ func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, db *g
 	offset := searchDto.PageSize * (searchDto.PageNum - 1)
 	var t T
 	name := t.TableName()
-	//global.Db.Offset(offset).Limit(limit).Table(name).Where(query).Order(order).Find(dest)
-	//res := global.Db.Table(name).Where(query).Find(bind)
+	//global.DB().Offset(offset).Limit(limit).Table(name).Where(query).Order(order).Find(dest)
+	//res := global.DB().Table(name).Where(query).Find(bind)
 	res := db.Table(name).Find(bind)
 	total := res.RowsAffected
 	db = db.Offset(offset).Limit(limit).Table(name).Order(order).Find(dest)
@@ -74,7 +74,7 @@ func (b *BaseRepostory[T, TODto]) FindWithPager(searchDto common.PageInfo, db *g
 // GetAll 獲取所有
 func (b *BaseRepostory[T, TODto]) GetAll() ([]T, error) {
 	t := make([]T, 0)
-	err := global.Db.Find(&t).Error
+	err := global.DB().Find(&t).Error
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (b *BaseRepostory[T, TODto]) GetAll() ([]T, error) {
 
 // Insert 新增一個實體，可選是否跳過鉤子函數
 func (b *BaseRepostory[T, TODto]) Insert(t *T, skipHook bool) (err error, rowsAffected int64) {
-	result := global.Db.Session(&gorm.Session{SkipHooks: skipHook}).Create(t)
+	result := global.DB().Session(&gorm.Session{SkipHooks: skipHook}).Create(t)
 	if result.Error != nil {
 		//panic(result.Error)
 		return result.Error, 0
@@ -93,7 +93,7 @@ func (b *BaseRepostory[T, TODto]) Insert(t *T, skipHook bool) (err error, rowsAf
 
 // InsertBatch 批量新增，可選是否跳過鉤子函數
 func (b *BaseRepostory[T, TODto]) InsertBatch(ts *[]*T, skipHook bool) (err error, rowsAffected int64) {
-	result := global.Db.Session(&gorm.Session{SkipHooks: skipHook}).Create(ts)
+	result := global.DB().Session(&gorm.Session{SkipHooks: skipHook}).Create(ts)
 	if result.Error != nil {
 		//panic(result.Error)
 		return result.Error, 0
@@ -104,8 +104,8 @@ func (b *BaseRepostory[T, TODto]) InsertBatch(ts *[]*T, skipHook bool) (err erro
 // Update 修改
 func (b *BaseRepostory[T, TODto]) Update(t *T, data map[string]any, skipHook bool) (rowsAffected int64, err error) {
 	//s := structs.New(T)
-	//result := global.Db.Debug().Omit("id", "updated").Model(TIDto).Updates(m)
-	result := global.Db.Debug().Model(t).Session(&gorm.Session{SkipHooks: skipHook}).Updates(data)
+	//result := global.DB().Debug().Omit("id", "updated").Model(TIDto).Updates(m)
+	result := global.DB().Debug().Model(t).Session(&gorm.Session{SkipHooks: skipHook}).Updates(data)
 	if result.Error != nil {
 		//panic(result.Error)
 		return 0, result.Error
@@ -116,7 +116,7 @@ func (b *BaseRepostory[T, TODto]) Update(t *T, data map[string]any, skipHook boo
 // DeleteByKeys 根據主鍵批量刪除
 func (b *BaseRepostory[T, TODto]) DeleteByKeys(keys []int) (int64, error) {
 	var t = new(T)
-	result := global.Db.Debug().Delete(t, keys)
+	result := global.DB().Debug().Delete(t, keys)
 	if result.Error != nil {
 		return 0, result.Error
 	}
@@ -126,7 +126,7 @@ func (b *BaseRepostory[T, TODto]) DeleteByKeys(keys []int) (int64, error) {
 // DeleteAll 刪除全部
 func (b *BaseRepostory[T, TODto]) DeleteAll() (rowsAffected int64, err error) {
 	var t = new(T)
-	result := global.Db.Debug().Where("1 = 1").Delete(t)
+	result := global.DB().Debug().Where("1 = 1").Delete(t)
 	if result.Error != nil {
 		return 0, result.Error
 	}
@@ -135,7 +135,7 @@ func (b *BaseRepostory[T, TODto]) DeleteAll() (rowsAffected int64, err error) {
 
 func (b *BaseRepostory[T, TODto]) GetBySQL(sql string) (*T, error) {
 	var t = new(T)
-	result := global.Db.Raw(sql).Scan(t)
+	result := global.DB().Raw(sql).Scan(t)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -147,7 +147,7 @@ func (b *BaseRepostory[T, TODto]) GetBySQL(sql string) (*T, error) {
 
 func (b *BaseRepostory[T, TODto]) GetListBySQL(sql string) ([]T, error) {
 	var t []T
-	result := global.Db.Raw(sql).Scan(&t)
+	result := global.DB().Raw(sql).Scan(&t)
 	if result.Error != nil {
 		return nil, result.Error
 	}

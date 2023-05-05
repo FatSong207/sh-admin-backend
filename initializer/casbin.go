@@ -7,7 +7,7 @@ import (
 )
 
 func InitCasbin() {
-	a, _ := gormadapter.NewAdapterByDB(global.Db)
+	a, _ := gormadapter.NewAdapterByDB(global.DB())
 	ce, _ := casbin.NewCachedEnforcer("./model.conf", a)
 	ce.SetExpireTime(60 * 60)
 	_ = ce.LoadPolicy()

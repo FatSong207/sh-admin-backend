@@ -19,7 +19,7 @@ func NewProductRepostory() interface_repostories.IProductRepostory {
 
 func (p *ProductRepostory) GetByCode(code string) (*models.Product, error) {
 	t := new(models.Product)
-	err := global.Db.Where("code=?", code).First(t).Error
+	err := global.DB().Where("code=?", code).First(t).Error
 	if err != nil {
 		return nil, err
 	}

@@ -29,7 +29,7 @@ func NewMenuService() interface_services.IMenuService {
 func (m *MenuService) GetMenuTreeMap(roleId int64, isCas bool) (treeMap map[string][]models.MenuOutDto, err error) {
 	var allMenus []models.MenuOutDto
 	var baseMenu []models.Menu
-	var db = global.Db.Model(&models.Menu{})
+	var db = global.DB().Model(&models.Menu{})
 	treeMap = make(map[string][]models.MenuOutDto)
 
 	if isCas {

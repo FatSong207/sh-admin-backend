@@ -140,7 +140,7 @@ func (u *UserService) FindWithPager(searchDto common.SearchDto[models.User]) (*[
 	for k, i := range searchDto.OrderRule.OrderBy {
 		o += k + " " + i
 	}
-	db := global.Db.Model(&query)
+	db := global.DB().Model(&query)
 
 	//db = db.Where(" type = ? ", "normalOp")
 	if query.Name != "" {

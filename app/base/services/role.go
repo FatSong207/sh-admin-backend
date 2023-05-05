@@ -33,7 +33,7 @@ func (r *RoleService) FindWithPager(searchDto common.SearchDto[models.Role]) (*[
 		o += k + " " + i
 	}
 	//t := new(T)
-	db := global.Db.Model(query)
+	db := global.DB().Model(query)
 	if query.Name != "" {
 		db = db.Where("name like ?", "%"+query.Name+"%")
 	}

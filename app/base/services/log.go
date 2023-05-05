@@ -35,7 +35,7 @@ func (l *LogService) FindWithPager(searchDto common.SearchDto[models.Log]) (*[]*
 	for k, i := range searchDto.OrderRule.OrderBy {
 		o += k + " " + i
 	}
-	db := global.Db.Model(&query)
+	db := global.DB().Model(&query)
 	db = db.Where(" type = ? ", "normalOp")
 	if query.Method != "" {
 		db = db.Where("method = ?", query.Method)
@@ -69,7 +69,7 @@ func (l *LogService) FindLoginlogWithPager(searchDto common.SearchDto[models.Log
 		o += k + " " + i
 	}
 
-	db := global.Db.Model(&query)
+	db := global.DB().Model(&query)
 	db = db.Where(" type = ? ", "login")
 	if query.Response != "" {
 		switch query.Response {
