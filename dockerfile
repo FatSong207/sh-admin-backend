@@ -1,10 +1,10 @@
 FROM golang:alpine
 
-RUN mkdir -p /app
-WORKDIR /app
+RUN mkdir -p /application
+WORKDIR /application
 
 COPY . .
 RUN  go env \
      && go mod tidy \
-     && go build -o app .
-ENTRYPOINT ["./app"]
+     && go build -o application .
+ENTRYPOINT ["./application"]

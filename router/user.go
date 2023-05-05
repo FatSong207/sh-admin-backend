@@ -10,7 +10,7 @@ func InitUserRouter(g *gin.RouterGroup) {
 	api := api.NewUserApi()
 	ug := g.Group("/user").Use(middleware.DbLogHandler())
 	{
-		//ug.GET("/:id", api.GetByIdApi)
+		ug.GET("/:id", api.GetByIdApi)
 		//ug.GET("/:id", api.Test)
 		ug.PUT("", api.UpdateApi)
 		ug.POST("/sendmail", api.SendMailToUserApi)
