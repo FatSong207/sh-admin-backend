@@ -1,6 +1,7 @@
 package main
 
 import (
+	"SH-admin/app/websocket"
 	_ "SH-admin/docs"
 	"SH-admin/global"
 	"SH-admin/initializer"
@@ -56,6 +57,7 @@ func main() {
 
 	//test
 	//global.Rdb.SetNX(context.Background(), "test1", "value1", 60*time.Second)
+	go websocket.Listen()
 
 	initializer.InitRouter()
 }

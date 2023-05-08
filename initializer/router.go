@@ -3,6 +3,7 @@ package initializer
 import (
 	"SH-admin/app/api"
 	middleware2 "SH-admin/app/middleware"
+	"SH-admin/app/websocket"
 	"SH-admin/global"
 	"SH-admin/router"
 	"fmt"
@@ -18,6 +19,7 @@ func InitRouter() {
 	e.Use(middleware2.Cors())
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	e.GET("ws/:uid", websocket.WsHandler)
 
 	//公共路由
 	publicGroup := e.Group("/api").Use(middleware2.DbLogHandler())
