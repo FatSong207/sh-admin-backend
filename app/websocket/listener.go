@@ -26,7 +26,7 @@ func Listen() {
 				fmt.Println(conn.ID, "已離開聊天")
 				close(conn.Send)
 				delete(Manager.Clients, conn.ID)
-				//// 線上用戶
+				// 線上用戶
 				sm1 := new(SendMsg)
 				sm1.Type = 1
 				sm1.From = "sys"
@@ -35,11 +35,6 @@ func Listen() {
 					BroadCast.msgChan <- sm1
 				}()
 				fmt.Println(sm1)
-				//BroadCast.msgChan <- &SendMsg{
-				//	Type:    1,
-				//	From:    "sys",
-				//	Content: strings.Join(GetConnectedUserNames(), ","),
-				//}
 			}
 		}
 	}

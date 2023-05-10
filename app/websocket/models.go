@@ -29,7 +29,7 @@ type SendMsg struct {
 	Type    int    `json:"type"`
 	From    string `json:"from"`
 	Content string `json:"content"`
-	Time    int    `json:"time"`
+	Time    int64  `json:"time"`
 }
 
 type BroadCastMsg struct {
@@ -79,7 +79,7 @@ func WsHandler(c *gin.Context) {
 		Type:    0,
 		From:    "sys",
 		Content: fmt.Sprintf("%s已連線", uid),
-		Time:    int(time.Now().Unix()),
+		Time:    time.Now().UnixMilli(),
 	}
 	BroadCast.msgChan <- sm
 
@@ -88,7 +88,7 @@ func WsHandler(c *gin.Context) {
 		Type:    1,
 		From:    "sys",
 		Content: strings.Join(GetConnectedUserNames(), ","),
-		Time:    int(time.Now().Unix()),
+		Time:    time.Now().UnixMilli(),
 	}
 
 	go client.Read()
@@ -103,22 +103,22 @@ func (c *Client) Read() {
 	for true {
 		c.Socket.PongHandler()
 		sendMsg := new(SendMsg)
-		err := c.Socket.ReadJSON(&sendMsg) // 读取json格式，如果不是json格式，会报错
+		err := c.Socket.ReadJSON(&sendMsg) // 必須為json
 		if err != nil {
 			log.Println("格式錯誤！", err)
-			Manager.Unregister <- c
-			_ = c.Socket.Close()
+			Manager.Unregister <- c //這段有需要嗎？ defer fun()不是做掉了？
+			_ = c.Socket.Close()    //這段有需要嗎？ defer fun()不是做掉了？
 			break
 		}
 		if sendMsg.Type == 0 {
-			sendMsg.Time = int(time.Now().Unix())
+			sendMsg.Time = time.Now().UnixMilli()
 			BroadCast.msgChan <- sendMsg
 			fmt.Printf("%v：%s。\n", c.ID, sendMsg.Content)
 		} else if sendMsg.Type == 2 {
 			disConMsg := new(SendMsg)
 			disConMsg.From = "sys"
 			disConMsg.Content = fmt.Sprintf("%v已離開聊天", c.ID)
-			disConMsg.Time = int(time.Now().Unix())
+			disConMsg.Time = time.Now().UnixMilli()
 			BroadCast.msgChan <- disConMsg
 			break
 		}
@@ -126,16 +126,12 @@ func (c *Client) Read() {
 
 }
 
+// GetConnectedUserNames 獲取線上用戶
 func GetConnectedUserNames() []string {
 	conUsers := make([]string, 0)
 	for _, c2 := range Manager.Clients {
 		conUsers = append(conUsers, c2.ID)
 	}
-	//BroadCast.msgChan <- &SendMsg{
-	//	Type:    1,
-	//	From:    "sys",
-	//	Content: strings.Join(conUsers, ","),
-	//}
 	fmt.Println(conUsers)
 	return conUsers
 }
