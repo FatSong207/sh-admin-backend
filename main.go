@@ -31,7 +31,6 @@ func main() {
 	go initializer.InitCron(sigChan)
 	<-sigChan //若上方InitCron沒做完會阻塞在這邊(確保InitCron做完)
 
-	go websocket.Listen()
-
+	go websocket.Hub.Run()
 	initializer.InitRouter()
 }
